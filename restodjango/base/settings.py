@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'api',
     'jresto',
+
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
