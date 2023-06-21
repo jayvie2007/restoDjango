@@ -20,7 +20,7 @@ class FoodGetApi(APIView):
         return Response({"Food List":serializers.data})
     
     def post(self, request):
-        errors = []
+        errors = {  }
         required_fields = ['name', 'description', 'price']
 
         for required_field in required_fields:
@@ -47,6 +47,19 @@ class FoodGetApi(APIView):
             return Response(data={"status": created, "message": product_added, "Food List":serializers.data})
         return Response(serializers.errors, status=bad_request)
     
+class FoodEditApi(APIView):
+    def put(self, request, uid):
+        try:
+            food = Food.objects.get(uid=uid)
+        except Food.DoesNotExist:
+                return Response(data={'status': not_found})
+        
+        serializers = FoodDetailsSerializer(food, data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(data={'status':ok, 'message':updated})
+        return Response(serializers.errors, status=bad_request)
+
 class DrinkGetApi(APIView):
     def get(self, request):
         drink = Drink.objects.all()
