@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Navbar container */
+.navbar {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Links inside the navbar */
+.navbar a {
+    font-size: 16px;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* The dropdown container */
+.dropdown {
+    overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    font-size: 28px;
+    border: none;
+    outline: none;
+    background-color: inherit;
+    font-family: inherit;
+    /* Important for vertical align on mobile phones */
+    /* Important for vertical align on mobile phones */
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    padding-left: -20px;
+    font-size: 28px;
+    color: black;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    border: 0px solid red;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+    color: red
+}
+
+.dropdown-content a:hover {
+    color: red;
+
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Logo {
+    font-size: 64px;
+}
+
+.Links {
+    font-size: 28px;
+    border: 0px solid black;
+    width: 60%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.Links a {
+    text-decoration: none;
+    color: black;
+}
+
+.Links ul {
+    list-style-type: none;
+    display: flex;
+    /* Display the list items in a row */
+    align-items: center;
+    /* Center items vertically */
+    margin: 0;
+    padding: 0;
+}
+
+.Links ul li {
+    list-style-type: none;
+    margin: 10px 30px;
+}
+
+.Links ul li a:hover {
+    color: red;
+
+}
+
+.UserInterface img {
+    margin: 10px 30px;
+}
+
+.Promo {
+    display: flex;
+    position: relative;
+    width: 100%;
+
+}
+
+.Promo img {
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.Promo button {
+    position: absolute;
+    top: 75%;
+    left: 55%;
+    background-color: black;
+    color: white;
+    font-size: 24px;
+    border-radius: 20px;
+    width: 150px;
+    height: 35px;
+}

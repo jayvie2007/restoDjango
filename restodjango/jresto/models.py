@@ -5,6 +5,7 @@ from django.conf import settings
 from datetime import date
 from django.utils.timezone import now
 # Create your models here.
+
 class Food(models.Model):
     product_id = models.CharField(max_length=8)
     name = models.CharField(max_length=25)

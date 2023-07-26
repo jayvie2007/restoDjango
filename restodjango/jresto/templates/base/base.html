@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type ="text/css" href="{% static 'css/dashboard.css' %}"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>{% block title %} {% endblock %}</title>
+</head> 
+<body>
+
+  <div class="nav">
+    <div class="Logo">
+      LOGO
+    </div>
+    
+    <div class="Links">
+      <ul>
+        <li><a href="{% url 'dashboard' %}">Home</a></li>
+        
+        <div class="navbar">
+        <div class="dropdown">
+            <button class="dropbtn">Menu
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Food</a>
+                <a href="#">Drink</a>
+                <a href="#">Side</a>
+            </div>
+          </div>
+        </div>
+
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="UserInterface">
+      <img src="{% static 'img/ui/cart.png' %}">
+      <img src="{% static 'img/ui/user.png' %}">
+    </div>
+  </div>
+
+  {% block body %}
+  {% endblock %}
+</body>
+</html>
