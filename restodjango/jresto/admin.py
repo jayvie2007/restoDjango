@@ -4,7 +4,7 @@ from .models import *
 
 admin.site.register(Food)
 admin.site.register(Drink)
-admin.site.register(Sidedish)
+admin.site.register(Side)
 
 admin.site.register(CustomerDetails)
 admin.site.register(Wallet)

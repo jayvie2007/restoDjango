@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from jresto.models import Food, Drink, Sidedish
+from jresto.models import Food, Drink, Side
 
 class FoodDetailsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,5 +14,5 @@ class DrinkDetailsSerializer(serializers.ModelSerializer):
 
 class SideDetailsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Sidedish
+        model = Side
         fields = ['name', 'price' ,'description']

@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 
 from constants.status_code import * 
 
-from jresto.models import Food, Drink, Sidedish
+from jresto.models import Food, Drink, Side
 
 from .serializers import FoodDetailsSerializer, DrinkDetailsSerializer, SideDetailsSerializer
 
