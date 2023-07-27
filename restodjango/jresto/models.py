@@ -30,7 +30,7 @@ class Drink(models.Model):
     def __str__(self):
         return f"Drinks: {self.name}"  
     
-class Sidedish(models.Model):
+class Side(models.Model):
     product_id = models.CharField(max_length=8)
     name = models.CharField(max_length=25, default="")
     picture = models.ImageField(blank=True, null=True)
@@ -40,7 +40,16 @@ class Sidedish(models.Model):
     date_updated = models.DateField(editable=False, default="")
 
     def __str__(self):
-        return f"Side Dishes: {self.name}"
+        return f"Side: {self.name}"
+
+class CustomAdmin(AbstractUser):
+    uid = models.CharField(max_length=8, default="")    
+    middle_name = models.CharField(max_length=255, null=True, blank=True, default="")
+    groups = models.ManyToManyField(Group, blank=True, related_name='customuser_set')
+    user_permissions = models.ManyToManyField(Permission, blank=True, related_name='customuser_set')
+    
+    def __str__(self):
+        return self.username + " " + self.email
 
 class CustomerDetails (AbstractUser):
     gender_choices = (
@@ -89,5 +98,3 @@ class Wallet(models.Model):
 
     def __str__(self):
         return f"Wallet: {self.customer.first_name} {self.customer.last_name}"
-      
-    

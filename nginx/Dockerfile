@@ -1,11 +1,4 @@
-FROM python:3-alphine
-WORKDIR /usr/src/app
+FROM nginx:latest
+RUN apt-get update && apt-get install -y procps
+RUN mkdir -p /home/app/staticfiles
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-
-RUN python manage.py collectstatic --noinput
