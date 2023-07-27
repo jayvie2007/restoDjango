@@ -1,0 +1,48 @@
+version: '1.0'
+services:
+  web:
+    container_name: resto_django
+    build: ./resto_django/
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes: -./base/:/usr/src/app -static_files/:/usr/src/app/static_files
+    depends_on:
+      - resto_db
+      - resto_redis
+    expose:
+      - 8000
+    env_file:
+      - ./.env/dev.env
+
+  redis:
+    container_name: resto_redis
+    image: redis
+    restart: always
+    volumes:
+      - redis_volume_data:/data
+    ports:
+      - 6379:6379
+
+  postgre:
+    container_name: resto_db
+    image: postgre
+    environment:
+      - POSTGRE_DB = resto_db
+      - POSTGRE_USER = admin
+      - POSTGRES_PASSWORD = admin
+    volumes: -resto_db/var/lib/postgresql/data
+
+  nginx:
+    build:
+      context: ./nginx/
+    ports:
+      - 80:80
+    depends_on:
+      - web
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - static_files:/home/app/staticfiles
+
+  volumes:
+    static_files:
+    resto_db:
+    redis_volume_data:
