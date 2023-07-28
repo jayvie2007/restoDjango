@@ -59,32 +59,34 @@ class GetDrinkAPIView(APIView):
     def get(self, request):
         drinks = Drink.objects.all()
         drink_serializers = DrinkGetSerializer(drinks, many=True)
-        return Response({"Food List": drink_serializers.data})
+        return Response({"Drink List": drink_serializers.data})
 
 class PostDrinkAPIView(APIView):
-    def menu_add_drink(self, request):
+    def post(self, request):
         pass
 
 class PutDrinkAPIView(APIView):    
-    def menu_edit_drink(self, request):
+    def put(self, request):
         pass
     
 class DeleteDrinkAPIView(APIView):    
-    def menu_delete_drink(self, request):
+    def delete(self, request):
         pass
 
 class GetSideAPIView(APIView):
-    def menu_get_side(self, request):
-        pass
+    def get(self, request):
+        sides = Drink.objects.all()
+        side_serializers = DrinkGetSerializer(sides, many=True)
+        return Response({"Drink List": side_serializers.data})
 
 class PostSideAPIView(APIView):    
-    def menu_add_side(self, request):
+    def post(self, request):
         pass
 
 class PutSideAPIView(APIView):
-    def menu_edit_side(self, request):
+    def put(self, request):
         pass
     
 class DeleteSideAPIView(APIView):  
-    def menu_delete_side(self, request):
+    def delete(self, request):
         pass
