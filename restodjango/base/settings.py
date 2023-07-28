@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'api',
+    
     'jresto',
 
     'rest_framework'
@@ -76,6 +75,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'base.wsgi.application'
 
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://sampleredis:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient"
+#         },
+#         #"KEY_PREFIX": "example"
+#     }
+# }
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -96,9 +105,20 @@ DATABASES = {
 #         'USER': os.environ.get("SQL_USER"),
 #         'PASSWORD': os.environ.get("SQL_PASSWORD"),
 #         'HOST': os.environ.get("SQL_HOST"),
-#         'PORT': int(os.environ.get("SQL_PORT"))
+#         'PORT': os.environ.get("SQL_PORT")
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': "django.db.backends.postgresql",
+#         'NAME': "resto_db",
+#         'USER': "admin",
+#         'PASSWORD': "admin",
+#         'HOST': "postgres",
+#         'PORT': "5432"
+#     }
+# }
+
 
 
 # Password validation

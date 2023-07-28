@@ -7,9 +7,10 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     #command: gunicorn base.wsgi:application --bind 0.0.0.0:8000 --reload
     volumes:
-      - ./restodjango/:/usr/src/app -static_files/:/usr/src/app/static_files
+      - ./restodjango/:/usr/src/app
+      - static_files:/usr/src/app/staticfiles
     depends_on:
-      - postgre
+      - postgres
       - redis
     expose:
       - 8000
@@ -18,22 +19,22 @@ services:
 
   redis:
     container_name: resto_redis
-    image: redis
+    image: redis:alpine
     restart: always
     volumes:
       - redis_volume_data:/data
     ports:
       - 6379:6379
 
-  postgre:
+  postgres:
     container_name: resto_db
-    image: postgre
+    image: postgres:alpine
     environment:
-      - POSTGRE_DB = resto_db
-      - POSTGRE_USER = admin
-      - POSTGRES_PASSWORD = admin
+      - POSTGRES_DB = resto_db
+      - POSTGRES_USER = admin
+      - POSTGRES_PASSWORD = admin1234
     volumes:
-      - resto_db/var/lib/postgresql/data
+      - resto_db:/var/lib/postgresql/data/
 
   nginx:
     build:

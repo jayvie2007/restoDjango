@@ -31,7 +31,7 @@ urlpatterns += [
 
 ###### AUTHENTICATION ######
 urlpatterns += [
-    path('admin/register', views_authentication.register, name="admin_registeer"),
+    path('staff/register', views_authentication.register, name="admin_register"),
 ]
 
 ###### TEMPLATES ######
