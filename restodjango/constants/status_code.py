@@ -18,9 +18,11 @@ register_success = ['Successfully Registered']
 product_added = ['Product has been successfully added']
 login_success = ['Successfully Login']
 incorrect_value = ['Incorrect input']
+deleted = ['Successfully Deleted']
 
 #################VALIDATION###################
 
+does_not_exist = "Doesn't exist!"
 username_exist = 'Username already exist!'
 email_exist = 'Email already exist!'
 password_not_match = "Password doesn't match!"

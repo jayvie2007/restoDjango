@@ -48,13 +48,15 @@ class FoodGetApi(APIView):
         return Response(serializers.errors, status=bad_request)
     
 class FoodEditApi(APIView):
-    def put(self, request, uid):
+
+
+    def put(self, request, product_id):
         try:
-            food = Food.objects.get(uid=uid)
+            foods = Food.objects.get(product_id = product_id)
         except Food.DoesNotExist:
                 return Response(data={'status': not_found})
         
-        serializers = FoodDetailsSerializer(food, data=request.data)
+        serializers = FoodDetailsSerializer(foods, data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(data={'status':ok, 'message':updated})

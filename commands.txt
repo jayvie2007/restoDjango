@@ -1,5 +1,13 @@
+######################
+Django Commands to remove sqlite
+
+rm db.sqlite3
+rm */migrations/0*
+python manage.py makemigrations
+python manage.py migrate
+
 #####################
-DJANGO commands
+DJANGO commands docker
 
 docker-compose run django django-admin startproject (name) .
 - to access django bash
@@ -67,3 +75,5 @@ from django.core.cache import cache
 
 cache.keys("*")
 cache.get(name)
+
+
