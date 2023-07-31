@@ -38,4 +38,9 @@ urlpatterns += [
 ###### TEMPLATES ######
 urlpatterns += [
     path('', views_templates.index, name="index"),
+    path('jresto/menu', views_templates.menu, name="menu"),
+    path('jresto/contact', views_templates.contact, name="contact_us"),
+
+    path('jresto/register', views_templates.register, name="customer_register"),
+    path('jresto/login', views_templates.login, name="customer_login"),
 ]

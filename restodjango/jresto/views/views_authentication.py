@@ -11,7 +11,7 @@ from constants.status_code import *
 
 
 def register(request):
-    return render(request, 'admin/authentication/register.html')
+    return render(request, 'product/authentication/register.html')
 
 def login(request):
     return render(request, 'admin/authentication/login.html')

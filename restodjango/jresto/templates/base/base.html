@@ -4,42 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type ="text/css" href="{% static 'css/dashboard.css' %}"> 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <title>{% block title %} {% endblock %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <title>{% block title %}  {% endblock %}</title>
 </head> 
 <body>
-
-  <div class="nav">
-    <div class="Logo">
-      LOGO
-    </div>
-    
-    <div class="Links">
-      <ul>
-        <li><a href="{% url 'dashboard' %}">Home</a></li>
-        
-        <div class="navbar">
-        <div class="dropdown">
-            <button class="dropbtn">Menu
-              <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="#">Food</a>
-                <a href="#">Drink</a>
-                <a href="#">Side</a>
-            </div>
-          </div>
+  
+  <div class="mr-5 flex justify-end">
+    <ul class="mt-5 flex justify-between gap-6 fixed">
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <div class="">
+        <button class="peer">Menu</button>
+        <div class="hidden peer-hover:flex hover:flex absolute flex-col">
+          <li class="py-4"><a href="{% url 'menu' %}">Food</a></li>
+          <li class="py-4"><a href="{% url 'menu' %}">Drink</a></li>
+          <li class="py-4"><a href="{% url 'menu' %}">Side</a></li>
         </div>
-
-        <li><a href="#">Contact Us</a></li>
-      </ul>
-    </div>
-
-    <div class="UserInterface">
-      <img src="{% static 'img/ui/cart.png' %}">
-      <img src="{% static 'img/ui/user.png' %}">
-    </div>
+      </div>
+      <li><a href="{% url 'contact_us' %}">Contact</a></li>
+      <li><a href="{% url 'customer_login' %}">Login</a></li>
+    </ul>
   </div>
 
   {% block body %}
