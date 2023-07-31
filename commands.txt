@@ -48,6 +48,18 @@ docker exec -it postgres psql -U postgres
 \q
 
 ==========
+notes on database in postgres in docker-compose
+POSTGRES-db/user/pass must have no spaces
+  postgres:
+    container_name: resto_db
+    image: postgres:alpine
+    environment:
+      - POSTGRES_DB=resto_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+    volumes:
+      - resto_db:/var/lib/postgresql/data/
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

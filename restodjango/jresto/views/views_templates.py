@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 def index(request):
-    return render(request, 'dashboard/dashboard.html')
+    return render(request, 'admin/authentication/register.html')
 
