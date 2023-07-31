@@ -10,21 +10,27 @@
 </head> 
 <body>
   
-  <div class="mr-5 flex justify-end">
-    <ul class="mt-5 flex justify-between gap-6 fixed">
-      <li><a href="{% url 'index' %}">Home</a></li>
-      <div class="">
-        <button class="peer">Menu</button>
-        <div class="hidden peer-hover:flex hover:flex absolute flex-col">
-          <li class="py-4"><a href="{% url 'menu' %}">Food</a></li>
-          <li class="py-4"><a href="{% url 'menu' %}">Drink</a></li>
-          <li class="py-4"><a href="{% url 'menu' %}">Side</a></li>
-        </div>
-      </div>
-      <li><a href="{% url 'contact_us' %}">Contact</a></li>
-      <li><a href="{% url 'customer_login' %}">Login</a></li>
-    </ul>
+  <div class="fixed top-0 left-0 w-full flex justify-between p-3 bg-white">
+  <div class="mt-1">
+    <a href="{% url 'index' %}"><i class="fa-solid fa-burger fa-lg">Jresto</i></a>
   </div>
+  <ul class="mt-1 flex justify-between gap-20">
+    <li><a href="{% url 'index' %}">Home</a></li>
+    <div class="relative">
+      <button class="peer">Menu <i class="fa-solid fa-angle-down fa-sm" style="color: #000000;"></i></button>
+      <div class="hidden peer-hover:flex hover:flex absolute flex-col">
+        <li class="py-4"><a href="{% url 'menu_food' %}">Food</a></li>
+        <li class="py-4"><a href="{% url 'menu_drink' %}">Drink</a></li>
+        <li class="py-4"><a href="{% url 'menu_side' %}">Side</a></li>
+      </div>
+    </div>
+    <li><a href="{% url 'contact_us' %}">Contact</a></li>
+    <li></li>
+  </ul>
+  <div class="mt-1">
+    <a href="{% url 'customer_login' %}">Login</a>
+  </div>
+</div>
 
   {% block body %}
   {% endblock %}
