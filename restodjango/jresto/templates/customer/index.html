@@ -1,10 +1,24 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block title %} Jresto {% endblock %}
 {% block body %}
 
-<div class="flex justify-center items-center h-screen">
-    <div class="w-120 p-6 shadow-2xl bg-slate-600 border-2 border-red-800"">
-        <hr>
+<div class="flex justify-center items-center mt-20">
+    <div class="w-auto p-6 shadow-2xl bg-slate-600 border-2 border-red-800">
+        <div class="mt-3">
+        <img src="{% static 'img/home/topimage.jpg' %}">
+        </div>
+        <div class="mt-3 md:flex">
+            <div class="mt-3">
+            <img src="{% static 'img/home/1.jpg' %}">
+            </div>
+            <div class="mt-3">
+            <img src="{% static 'img/home/2.jpg' %}">
+            </div>
+        </div>
+        <img src="{% static 'img/home/3.jpg' %}">
+        <img src="{% static 'img/home/4.jpg' %}">
+        <img src="{% static 'img/home/5.jpg' %}">
     </div>
 </div>
 {% endblock %}

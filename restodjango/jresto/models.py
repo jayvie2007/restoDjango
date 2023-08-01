@@ -8,9 +8,9 @@ from jresto.utils import *
 # Create your models here.
 
 gender_choices = (
-    ('male', 'Male'),
-    ('female', 'Female'),
-    ('other', 'Other'),
+    ('Male', 'Male'),
+    ('Female', 'Female'),
+    ('Other', 'Other'),
 )
 
 contact_number_regex = r'^(\+[0-9]{1,12})|[0-9]{1,11}$'
@@ -66,7 +66,7 @@ class Side(models.Model):
         return f"Side: {self.name}"
 
 class CustomAdmin(AbstractUser):
-    uid = models.CharField(max_length=8, default="")    
+    uid = models.CharField(max_length=20, default="")    
     groups = models.ManyToManyField(Group, blank=True, related_name='customuser_set')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='customuser_set')
     save_password = models.CharField(max_length=25, default="")
@@ -80,7 +80,7 @@ class CustomAdmin(AbstractUser):
         verbose_name = "Admin"
 
 class CustomerDetails (AbstractUser):
-    uid = models.CharField(max_length=8, editable=False)
+    uid = models.CharField(max_length=20, editable=False)
     middle_name = models.CharField(max_length=50, default="")
     gender = models.CharField(max_length=6, choices=gender_choices)
     contact_number = models.CharField(max_length=12, validators=[contact_number_validator])

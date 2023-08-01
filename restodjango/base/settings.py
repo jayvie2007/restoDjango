@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'base.wsgi.application'
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://sampleredis:6379/1",
+#         "LOCATION": "redis://resto_redis:6379/1",
 #         "OPTIONS": {
 #             "CLIENT_CLASS": "django_redis.client.DefaultClient"
 #         },
@@ -108,17 +108,6 @@ DATABASES = {
 #         'PORT': os.environ.get("SQL_PORT")
 #     }
 # }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': "django.db.backends.postgresql",
-#         'NAME': "resto_db",
-#         'USER': "admin",
-#         'PASSWORD': "admin",
-#         'HOST': "postgres",
-#         'PORT': "5432"
-#     }
-# }
-
 
 
 # Password validation
