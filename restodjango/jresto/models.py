@@ -30,7 +30,7 @@ class CustomerFeedback(models.Model):
         return f"{self.id}. {self.name}"
 
 class Food(models.Model):
-    product_id = models.CharField(max_length=16, default=generate_fooduid)
+    product_id = models.CharField(max_length=16, default=f"food__{generate_uid()}")
     name = models.CharField(max_length=25)
     picture = models.ImageField(blank=True, null=True)
     price = models.IntegerField(default=0)
@@ -42,25 +42,25 @@ class Food(models.Model):
         return f"Food: {self.name}"    
     
 class Drink(models.Model):
-    product_id = models.CharField(max_length=16, editable=False)
+    product_id = models.CharField(max_length=16, default=f"drink__{generate_uid()}")
     name = models.CharField(max_length=25, default="")
     picture = models.ImageField(blank=True, null=True)
     price = models.IntegerField(default=0)
     description = models.CharField(max_length=100, default="")
-    date_created = models.DateField(editable=False, default=date.today)
-    date_updated = models.DateField(editable=False, default=date.today)
+    date_created = models.DateField(default=date.today)
+    date_updated = models.DateField(default=date.today)
 
     def __str__(self):
         return f"Drink: {self.name}"  
     
 class Side(models.Model):
-    product_id = models.CharField(max_length=16)
+    product_id = models.CharField(max_length=16, default=f"side__{generate_uid()}")
     name = models.CharField(max_length=25, default="")
     picture = models.ImageField(blank=True, null=True)
     price = models.IntegerField(default=0)
     description = models.CharField(max_length=100, default="")
-    date_created = models.DateTimeField(editable=False, default=date.today)
-    date_updated = models.DateField(editable=False, default=date.today)
+    date_created = models.DateField(default=date.today)
+    date_updated = models.DateField(default=date.today)
 
     def __str__(self):
         return f"Side: {self.name}"
@@ -70,8 +70,8 @@ class CustomAdmin(AbstractUser):
     groups = models.ManyToManyField(Group, blank=True, related_name='customuser_set')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='customuser_set')
     save_password = models.CharField(max_length=25, default="")
-    date_created = models.DateField(editable=False, default=date.today)
-    date_updated = models.DateField(editable=False, default=date.today)
+    date_created = models.DateField(default=date.today)
+    date_updated = models.DateField(default=date.today)
 
     def __str__(self):
         return self.username + " " + self.email
@@ -87,8 +87,8 @@ class CustomerDetails (AbstractUser):
     groups = models.ManyToManyField(Group, blank=True, related_name='CustomerDetails')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='CustomerDetails')
     save_password = models.CharField(max_length=20, default="")
-    date_created = models.DateField(editable=False, default=date.today)
-    date_updated = models.DateField(editable=False, default=date.today)
+    date_created = models.DateField(default=date.today)
+    date_updated = models.DateField(default=date.today)
 
     def __str__(self):
         return f"Customer: {self.first_name} {self.last_name}"
