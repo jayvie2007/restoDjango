@@ -1,38 +1,51 @@
 {% extends 'base/base.html' %}
 {% block title %} Customer Login {% endblock %}
 {% block body %}
-    <form action="">
-        <div class="flex justify-center items-center h-screen bg-gray-700">
-            <div class="w-96 p-6 shadow-lg bg-white rounded-md">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="flex justify-center items-center h-screen bg-gray-700 max-md:mt-5">
+            <div class="w-120 p-6 shadow-lg bg-white rounded-md max-md:w-96">
                 <h1 class="text-3x1 block text-center font-semibold"><i class="fa-solid fa-user"></i> Customer Register</h1>
                 <hr class="mt-3">
-                <div class="mt-3">
+                <div class="mt-3 gap-5 md:flex">
+                    <div class="max-md:mt-3 w-full">
                     <label for="customer_first_name" class="block test-base mb-2">First Name:</label>
-                    <input type="text" id="customer_firstname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter First Name">
+                    <input type="text" id="customer_firstname" name="customer_firstname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter First Name">
+                    </div>
+                    <div class="max-md:mt-3 w-full">
+                    <label for="customer_middle_name" class="block test-base mb-2">Middle Name:</label>
+                    <input type="text" id="customer_middlename" name="customer_middlename" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Middle Name">
+                    </div>
+                    <div class="max-md:mt-3 w-full">
+                    <label for="customer_last_name" class="block test-base mb-2">Last Name:</label>
+                    <input type="text" id="customer_lastname" name="customer_lastname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Last Name">
+                    </div>
                 </div>
                 <div class="mt-3">
-                    <label for="customer_last_name" class="block test-base mb-2">Last Name:</label>
-                    <input type="text" id="customer_lastname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Last Name">
+                    <label for="customer_gender" class="block test-base mb-2">Gender:</label>
+                    <input type="text" id="customer_gender" name="customer_gender" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Gender">
                 </div>
                 <div class="mt-3">
                     <label for="customer_username" class="block test-base mb-2">Username:</label>
-                    <input type="text" id="customer_username" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Username">
+                    <input type="text" id="customer_username" name="customer_username" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Username">
                 </div>
                 <div class="mt-3">
                     <label for="customer_email" class="block test-base mb-2">Email Address:</label>
-                    <input type="text" id="customer_email" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Email Address">
+                    <input type="text" id="customer_email" name="customer_email" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Email Address">
                 </div>
                 <div class="mt-3">
                     <label for="customer_number" class="block test-base mb-2">Contact Number:</label>
-                    <input type="text" id="customer_number" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Contact Number">
+                    <input type="text" id="customer_number" name="customer_number" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Contact Number">
                 </div>
-                <div class="mt-3">
-                    <label for="customer_password" class="block test-base mb-2">Password:</label>
-                    <input type="text" id="customer_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Password">
-                </div>
-                <div class="mt-3">
-                    <label for="customer_password2" class="block test-base mb-2">Confirm Password:</label>
-                    <input type="text" id="customer_confirm_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Confirm Password">
+                <div class="flex mt-3 gap-5">
+                    <div class="w-full">
+                        <label for="customer_password" class="block test-base mb-2">Password:</label>
+                        <input type="password" id="customer_password" name="customer_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Password">
+                    </div>
+                    <div class="w-full">
+                        <label for="customer_password2" class="block test-base mb-2">Confirm Password:</label>
+                        <input type="password" id="customer_confirm_password" name="customer_confirm_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Confirm Password">
+                    </div>
                 </div>
                 <div class="mt-3 flex justify-end">
                     <div>

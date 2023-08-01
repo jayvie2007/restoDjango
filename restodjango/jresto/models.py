@@ -24,6 +24,7 @@ class CustomerFeedback(models.Model):
     email = models.EmailField()
     contact_number = models.CharField(max_length=12, validators=[contact_number_validator])
     message = models.CharField(max_length=500)
+    date_created = models.DateField(default=date.today)
 
     def __str__(self):
         return f"{self.id}. {self.name}"
@@ -74,14 +75,13 @@ class CustomAdmin(AbstractUser):
         return self.username + " " + self.email
 
 class CustomerDetails (AbstractUser):
-
     uid = models.CharField(max_length=8, editable=False)
     middle_name = models.CharField(max_length=50, default="")
-    extension_name = models.CharField(max_length=50, default="", null=True)
     gender = models.CharField(max_length=6, choices=gender_choices)
     contact_number = models.CharField(max_length=12, validators=[contact_number_validator])
     groups = models.ManyToManyField(Group, blank=True, related_name='CustomerDetails')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='CustomerDetails')
+    save_password = models.CharField(max_length=20, default="")
     date_created = models.DateField(editable=False, default=date.today)
     date_updated = models.DateField(editable=False, default=date.today)
 
@@ -99,12 +99,7 @@ class CustomerDetails (AbstractUser):
             )
     
 class Wallet(models.Model):
-    customer = models.OneToOneField(
-        CustomerDetails,
-        on_delete=models.CASCADE,
-        primary_key=True,
-        related_name='wallet'
-    )
+    customer = models.OneToOneField(CustomerDetails,on_delete=models.CASCADE,primary_key=True,related_name='wallet')
     cash = models.IntegerField(default=0)
 
     def __str__(self):

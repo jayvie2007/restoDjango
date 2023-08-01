@@ -1,14 +1,11 @@
 from django.urls import path, include
 
-from .views import views_api_authentication 
-from .views import views_api_templates
-from .views import views_authentication 
-from .views import views_templates 
+from .views import views_api_authentication, views_api_templates, views_authentication, views_templates 
  
-
 ###### API_AUTHENTICATION ######
 urlpatterns = [
-    path('api/authentication', views_api_authentication.get_admin, name="dashboard"),
+    path('api/authentication/admin', views_api_authentication.GetAdminApi.as_view(), name="dashboard"),
+    path('api/authentication/customer', views_api_authentication.GetCustomerApi.as_view(), name="dashboard"),
 ]
 
 ###### API_TEMPLATES ######
@@ -35,6 +32,9 @@ urlpatterns += [
 urlpatterns += [
     path('staff/register', views_authentication.register, name="admin_register"),
     path('staff/login', views_authentication.login, name="admin_login"),
+
+    path('jresto/register', views_templates.register, name="customer_register"),
+    path('jresto/login', views_templates.login, name="customer_login"),
 ]
 
 ###### TEMPLATES ######
@@ -46,7 +46,5 @@ urlpatterns += [
     path('jresto/menu/side', views_templates.side, name="menu_side"),
 
     path('jresto/contact-us', views_templates.contact, name="contact_us"),
-
-    path('jresto/register', views_templates.register, name="customer_register"),
-    path('jresto/login', views_templates.login, name="customer_login"),
 ]
+
