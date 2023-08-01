@@ -67,12 +67,17 @@ class Side(models.Model):
 
 class CustomAdmin(AbstractUser):
     uid = models.CharField(max_length=8, default="")    
-    middle_name = models.CharField(max_length=255, null=True, blank=True, default="")
     groups = models.ManyToManyField(Group, blank=True, related_name='customuser_set')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='customuser_set')
-    
+    save_password = models.CharField(max_length=25, default="")
+    date_created = models.DateField(editable=False, default=date.today)
+    date_updated = models.DateField(editable=False, default=date.today)
+
     def __str__(self):
         return self.username + " " + self.email
+    
+    class Meta:
+        verbose_name = "Admin"
 
 class CustomerDetails (AbstractUser):
     uid = models.CharField(max_length=8, editable=False)
@@ -97,6 +102,9 @@ class CustomerDetails (AbstractUser):
                 customer=self,
                 cash=0
             )
+
+    class Meta:
+        verbose_name = "Customer"
     
 class Wallet(models.Model):
     customer = models.OneToOneField(CustomerDetails,on_delete=models.CASCADE,primary_key=True,related_name='wallet')

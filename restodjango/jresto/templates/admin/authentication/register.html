@@ -7,34 +7,35 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 </head>
 <body>
-    <form action="">
+    <form method="POST">
+        {% csrf_token %}
         <div class="flex justify-center items-center h-screen bg-gray-700">
             <div class="w-96 p-6 shadow-lg bg-white rounded-md">
-                <h1 class="text-3x1 block text-center font-semibold"><i class="fa-solid fa-user"></i> Register</h1>
+                <h1 class="text-3x1 block text-center font-semibold"><i class="fa-solid fa-user"></i> Register Admin</h1>
                 <hr class="mt-3">
                 <div class="mt-3">
                     <label for="admin_first_name" class="block test-base mb-2">First Name:</label>
-                    <input type="text" id="admin_firstname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter First Name">
+                    <input type="text" id="admin_firstname" name="admin_firstname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                 </div>
                 <div class="mt-3">
                     <label for="password" class="block test-base mb-2">Last Name:</label>
-                    <input type="text" id="admin_lastname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Last Name">
+                    <input type="text" id="admin_lastname" name="admin_lastname" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                 </div>
                 <div class="mt-3">
                     <label for="password" class="block test-base mb-2">Username:</label>
-                    <input type="text" id="admin_user" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Username">
+                    <input type="text" id="admin_user" name="admin_user" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                 </div>
                 <div class="mt-3">
                     <label for="password" class="block test-base mb-2">Email Address:</label>
-                    <input type="text" id="admin_email" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Email Address">
+                    <input type="text" id="admin_email" name="admin_email" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                 </div>
                 <div class="mt-3">
                     <label for="password" class="block test-base mb-2">Password:</label>
-                    <input type="text" id="admin_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Password">
+                    <input type="text" id="admin_password" name="admin_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                 </div>
                 <div class="mt-3">
                     <label for="password" class="block test-base mb-2">Confirm Password:</label>
-                    <input type="text" id="admin_confirm_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md" placeholder="Enter Confirm Password">
+                    <input type="text" id="admin_confirm_password" name="admin_confirm_password" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                 </div>
                 <div class="mt-3 flex justify-end">
                     <div>
