@@ -1,4 +1,4 @@
-from jresto.models import Food, Drink, Side
+from jresto.models import Food, Drink, Side, CustomerFeedback
 from rest_framework import serializers
 
 class FoodGetSerializer(serializers.ModelSerializer):
@@ -15,3 +15,8 @@ class SideGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Side
         fields = '__all__'
+
+class FeedbackGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerFeedback
+        fields ='__all__'

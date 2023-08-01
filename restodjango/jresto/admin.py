@@ -12,3 +12,5 @@ admin.site.register(Side)
 
 admin.site.register(CustomerDetails)
 admin.site.register(Wallet)
+
+admin.site.register(CustomerFeedback)

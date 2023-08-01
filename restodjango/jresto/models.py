@@ -7,6 +7,27 @@ from datetime import date
 from jresto.utils import *
 # Create your models here.
 
+gender_choices = (
+    ('male', 'Male'),
+    ('female', 'Female'),
+    ('other', 'Other'),
+)
+
+contact_number_regex = r'^(\+[0-9]{1,12})|[0-9]{1,11}$'
+contact_number_validator = RegexValidator(
+    regex=contact_number_regex,
+    message='Contact number must start with + and include only digits.'
+)
+
+class CustomerFeedback(models.Model):
+    name = models.CharField(max_length=25)
+    email = models.EmailField()
+    contact_number = models.CharField(max_length=12, validators=[contact_number_validator])
+    message = models.CharField(max_length=500)
+
+    def __str__(self):
+        return f"{self.id}. {self.name}"
+
 class Food(models.Model):
     product_id = models.CharField(max_length=16, default=generate_fooduid)
     name = models.CharField(max_length=25)
@@ -53,18 +74,7 @@ class CustomAdmin(AbstractUser):
         return self.username + " " + self.email
 
 class CustomerDetails (AbstractUser):
-    gender_choices = (
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other'),
-    )
 
-    contact_number_regex = r'^(\+[0-9]{1,12})|[0-9]{1,11}$'
-    contact_number_validator = RegexValidator(
-        regex=contact_number_regex,
-        message='Contact number must start with + and include only digits.'
-    )
-    
     uid = models.CharField(max_length=8, editable=False)
     middle_name = models.CharField(max_length=50, default="")
     extension_name = models.CharField(max_length=50, default="", null=True)

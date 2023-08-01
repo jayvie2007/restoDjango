@@ -3,13 +3,19 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from jresto.models import Food,Drink,Side
-from jresto.serializers.product_serializers import FoodGetSerializer, DrinkGetSerializer, SideGetSerializer
+from jresto.models import Food,Drink,Side, CustomerFeedback
+from jresto.serializers.product_serializers import FoodGetSerializer, DrinkGetSerializer, SideGetSerializer, FeedbackGetSerializer
 from jresto.utils import *
 
 from constants.status_code import *
 
 from datetime import date
+
+class GetCustomerFeedback(APIView):
+    def get(self, request):
+        customer_feedback = CustomerFeedback.objects.all()
+        feedback_serializers = FeedbackGetSerializer(customer_feedback, many=True)
+        return Response({"Food List": feedback_serializers.data})
 
 class GetFoodAPIView(APIView):
     def get(self, request):

@@ -27,6 +27,8 @@ urlpatterns += [
     path('api/product/addside', views_api_templates.PostSideAPIView.as_view(), name="add_side"),
     path('api/product/side/<str:product_id>', views_api_templates.PutSideAPIView.as_view(), name="edit_side"),
     path('api/product/side/delete/<str:product_id>', views_api_templates.DeleteSideAPIView.as_view(), name="delete_side"),
+   
+    path('api/customer/feedback', views_api_templates.GetCustomerFeedback.as_view(), name="get_feedback"),
 ]
 
 ###### AUTHENTICATION ######
