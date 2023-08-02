@@ -11,6 +11,8 @@ from datetime import date
 def index(request):
     return render(request, 'customer/index.html')
 
+def menu(request):
+    return render(request, 'customer/menu.html')
 def food(request):
     return render(request, 'customer/menu/food.html')
 def drink(request):

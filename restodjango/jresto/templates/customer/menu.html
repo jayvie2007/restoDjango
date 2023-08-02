@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %} Jresto Menu {% endblock %}
+{% block body %}
+    <div class="flex flex-row gap-20 justify-center items-center h-screen max-md:flex-col max-md:mt-36 max-md:gap-5">
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
+            <h1 class="text-3x1 block text-center font-semibold">Food</h1>
+            <a href="{% url 'menu_food' %}"><img class="hover:opacity-75" src="{% static 'img/food/menu/food.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_food' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
+        </div>
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
+            <h1 class="text-3x1 block text-center font-semibold">Drink</h1>
+            <a href="{% url 'menu_drink' %}"><img class="hover:opacity-75" src="{% static 'img/food/menu/drink.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_drink' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
+        </div>
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
+            <h1 class="text-3x1 block text-center font-semibold">Side</h1>
+            <a href="{% url 'menu_side' %}"><img  class="hover:opacity-75" src="{% static 'img/food/menu/side.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_side' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
+        </div>
+
+   
+    </div>
+{% endblock %}

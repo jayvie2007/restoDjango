@@ -16,7 +16,14 @@
   </div>
   <ul class="mt-1 flex justify-between gap-20">
     <li><a href="{% url 'index' %}">Home</a></li>
-    <li><a href="{% url 'menu' %}">Menu</a></li>
+    <div class="relative">
+      <button class="peer">Menu <i class="fa-solid fa-angle-down fa-sm" style="color: #000000;"></i></button>
+      <div class="hidden peer-hover:flex hover:flex absolute flex-col">
+        <li class="py-4"><a href="{% url 'menu_food' %}">Food</a></li>
+        <li class="py-4"><a href="{% url 'menu_drink' %}">Drink</a></li>
+        <li class="py-4"><a href="{% url 'menu_side' %}">Side</a></li>
+      </div>
+    </div>
     <li><a href="{% url 'contact_us' %}">Contact</a></li>
   </ul>
   <div class="mt-1">

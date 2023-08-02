@@ -41,6 +41,7 @@ urlpatterns += [
 urlpatterns += [
     path('', views_templates.index, name="index"),
 
+    path('jresto/menu', views_templates.menu, name="menu"),
     path('jresto/menu/food', views_templates.food, name="menu_food"),
     path('jresto/menu/drink', views_templates.drink, name="menu_drink"),
     path('jresto/menu/side', views_templates.side, name="menu_side"),
