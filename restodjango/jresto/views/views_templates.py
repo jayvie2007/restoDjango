@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.hashers import make_password
 
-from jresto.models import CustomerFeedback, CustomerDetails
+from jresto.models import CustomerFeedback, CustomerDetails, Food, Drink, Side
 from jresto.utils import *
 
 from constants.status_code import *
@@ -13,12 +13,24 @@ def index(request):
 
 def menu(request):
     return render(request, 'customer/menu.html')
+
 def food(request):
-    return render(request, 'customer/menu/food.html')
+    meal = Food.objects.all()
+    return render(request, 'customer/menu/food.html', {
+        'meal':meal,
+    })
+
 def drink(request):
-    return render(request, 'customer/menu/drink.html')
+    drink = Drink.objects.all()
+    return render(request, 'customer/menu/drink.html', {
+        'drink':drink,
+    })
+
 def side(request):
-    return render(request, 'customer/menu/side.html')
+    side = Side.objects.all()
+    return render(request, 'customer/menu/side.html', {
+        'side':side,
+    })
 
 def contact(request):
     if request.method == 'POST':
