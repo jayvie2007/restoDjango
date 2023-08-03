@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} Jresto Menu {% endblock %}
 {% block body %}
-    <div class="flex flex-row gap-20 justify-center items-center h-screen max-md:flex-col max-md:mt-36 max-md:gap-5">
+    <div class="flex flex-row gap-20 justify-center items-center h-screen max-md:flex-col max-md:h-full max-md:mt-20 max-md:gap-5">
         <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
             <h1 class="text-3x1 block text-center font-semibold">Food</h1>
             <a href="{% url 'menu_food' %}"><img class="hover:opacity-75" src="{% static 'img/food/menu/food.png' %}"></a>
