@@ -15,21 +15,21 @@ def menu(request):
     return render(request, 'customer/menu.html')
 
 def food(request):
-    meal = Food.objects.all()
+    foods = Food.objects.all()
     return render(request, 'customer/menu/food.html', {
-        'meal':meal,
+        'foods':foods,
     })
 
 def drink(request):
-    drink = Drink.objects.all()
+    drinks = Drink.objects.all()
     return render(request, 'customer/menu/drink.html', {
-        'drink':drink,
+        'drinks':drinks,
     })
 
 def side(request):
-    side = Side.objects.all()
+    sides = Side.objects.all()
     return render(request, 'customer/menu/side.html', {
-        'side':side,
+        'sides':sides,
     })
 
 def contact(request):
