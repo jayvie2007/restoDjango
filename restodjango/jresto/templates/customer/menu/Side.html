@@ -3,15 +3,43 @@
 {% block title %} Jresto Side {% endblock %}
 {% block body %}
 
-<div class="flex flex-row justify-center items-center mt-20">
-    <div class="w-120 p-6 shadow-2xl bg-slate-600 border-2 border-red-800 gap-5">
-        <div class="mt-3">
-        <img src="{% static 'img/food/side/1.png' %}">
+<div class="flex justify-center items-center h-screen max-lg:gap-5 max-lg:h-full ">
+    <div class="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-y-5 mt-10 gap-x-10">
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md "> 
+            <h1 class="text-3x1 block text-center font-semibold">Mango Graham Sundae</h1>
+            <img class="hover:opacity-75 w-full" src="{% static 'img/food/side/1.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_food' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
         </div>
-        <img src="{% static 'img/food/side/2.png' %}">
-        <img src="{% static 'img/food/side/3.png' %}">
-        <img src="{% static 'img/food/side/4.png' %}">
-        <img src="{% static 'img/food/side/5.png' %}">
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
+            <h1 class="text-3x1 block text-center font-semibold">Peach Mango Pie in a box</h1>
+            <img class="hover:opacity-75 w-full" src="{% static 'img/food/side/2.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_food' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
+        </div>
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
+            <h1 class="text-3x1 block text-center font-semibold">Peach Mango Pie Trio</h1>
+            <img class="hover:opacity-75 w-full" src="{% static 'img/food/side/3.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_food' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
+        </div>
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
+            <h1 class="text-3x1 block text-center font-semibold">Peach Mango Pie</h1>
+            <img class="hover:opacity-75 w-full" src="{% static 'img/food/side/4.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_food' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
+        </div>
+        <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md"> 
+            <h1 class="text-3x1 block text-center font-semibold">Sundae</h1>
+            <img class="hover:opacity-75 w-full" src="{% static 'img/food/side/5.png' %}"></a>
+            <div class="mt-5">
+                <a href="{% url 'menu_food' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
+            </div>
+        </div>
     </div>
 </div>
 
