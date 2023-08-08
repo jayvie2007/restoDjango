@@ -2,9 +2,12 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.conf import settings
+
 from datetime import date
 
 from jresto.utils import *
+
+import os
 # Create your models here.
 
 gender_choices = (
@@ -39,7 +42,26 @@ class Food(models.Model):
     date_updated = models.DateField(default=date.today)
 
     def __str__(self):
-        return f"Food: {self.name}"    
+        return f"Food: {self.name}" 
+    
+    def save(self, *args, **kwargs):
+        self.date_updated = date.today()
+        super().save(*args, **kwargs)
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.picture.url
+        except:
+            url = ''
+        return url   
+    
+    def delete_image(self):
+        if self.picture:
+            if os.path.exists(self.picture.path):
+                os.remove(self.picture.path)
+            self.picture = None
+            self.save(update_fields=['picture'])
     
 class Drink(models.Model):
     product_id = models.CharField(max_length=16, default=f"drink__{generate_uid()}")
@@ -53,6 +75,25 @@ class Drink(models.Model):
     def __str__(self):
         return f"Drink: {self.name}"  
     
+    def save(self, *args, **kwargs):
+        self.date_updated = date.today()
+        super().save(*args, **kwargs)
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.picture.url
+        except:
+            url = ''
+        return url   
+    
+    def delete_image(self):
+        if self.picture:
+            if os.path.exists(self.picture.path):
+                os.remove(self.picture.path)
+            self.picture = None
+            self.save(update_fields=['picture'])
+    
 class Side(models.Model):
     product_id = models.CharField(max_length=16, default=f"side__{generate_uid()}")
     name = models.CharField(max_length=25, default="")
@@ -64,6 +105,25 @@ class Side(models.Model):
 
     def __str__(self):
         return f"Side: {self.name}"
+    
+    def save(self, *args, **kwargs):
+        self.date_updated = date.today()
+        super().save(*args, **kwargs)
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.picture.url
+        except:
+            url = ''
+        return url   
+    
+    def delete_image(self):
+        if self.picture:
+            if os.path.exists(self.picture.path):
+                os.remove(self.picture.path)
+            self.picture = None
+            self.save(update_fields=['picture'])
 
 class CustomAdmin(AbstractUser):
     uid = models.CharField(max_length=20, default="")    

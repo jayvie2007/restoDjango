@@ -16,6 +16,7 @@ def menu(request):
 
 def food(request):
     foods = Food.objects.all()
+    
     return render(request, 'customer/menu/food.html', {
         'foods':foods,
     })
