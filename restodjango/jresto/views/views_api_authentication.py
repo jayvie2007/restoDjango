@@ -13,7 +13,7 @@ from constants.status_code import *
 class GetAdminApi(APIView):
     def get(self, request):
         customers = CustomUser.objects.filter(user_level='Admin')
-        serializers = CustomerGetSerializer(customers, many=True)
+        serializers = AdminGetSerializer(customers, many=True)
         return Response({"List of Admin": serializers.data})
 
 class GetCustomerApi(APIView):
