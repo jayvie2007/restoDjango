@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, logout, login
 
 from jresto.models import CustomerFeedback, CustomerDetails, Food, Drink, Side
 from jresto.utils import *
@@ -54,7 +55,7 @@ def contact(request):
         })
     return render(request, 'customer/contact.html')
 
-def register(request):
+def register_customer(request):
     if request.method == 'POST':
         customer_firstname = request.POST['customer_firstname']
         customer_middlename = request.POST['customer_middlename']
@@ -82,7 +83,7 @@ def register(request):
                 })
             else:
                 new_customer = CustomerDetails.objects.create(
-                    uid = f"customer__{uid}",
+                    uid = f"customer__{generate_uid}",
                     first_name = customer_firstname,
                     middle_name = customer_middlename,
                     last_name = customer_lastname,
@@ -105,6 +106,26 @@ def register(request):
             })
     return render(request, 'customer/authentication/register.html')
 
-def login(request):
+def login_customer(request):
+    if request.method == 'POST':
+        customer_user = request.POST['customer_user']
+        customer_pass = request.POST['customer_pass']
+
+        users = authenticate(request, username=customer_user, password=customer_pass)
+        if users is not None:
+            login(request, users)
+            print("customer login!")
+            return render(request, 'customer/index.html', {
+                'success':True
+            })
+        else:
+            print("customer failed")
+            return render(request, 'customer/authentication/login.html', {
+                'success':False,
+            })
     return render(request, 'customer/authentication/login.html')
 
+def logout_customer(request):
+    print("logout")
+    logout(request)
+    return redirect('index')

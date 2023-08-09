@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
@@ -10,7 +11,7 @@ from jresto.utils import *
 from constants.status_code import *
 
 
-def register(request):
+def register_staff(request):
     if request.method == 'POST':
         admin_firstname = request.POST['admin_firstname']
         admin_lastname = request.POST['admin_lastname']
@@ -35,7 +36,7 @@ def register(request):
                 })
             else:
                 new_admin = CustomAdmin.objects.create(
-                    uid = f"admin__{uid}",
+                    uid = f"admin__{generate_uid}",
                     first_name = admin_firstname,
                     last_name = admin_lastname,
                     email = admin_email,
@@ -56,8 +57,19 @@ def register(request):
     return render(request, 'admin/authentication/register.html')
 
 
-def login(request):
-    return render(request, 'admin/authentication/login.html')
+def login_staff(request):
+    if request.method == 'POST':
+        admin_username = request.POST['admin_user']
+        admin_password = request.POST['admin_password']
 
-def logout(request):
-    pass
+        users = authenticate(request, username=admin_username, password=admin_password)
+        if users is not None:
+            login(request,users)
+            return render(request, 'customer/index.html', {
+                'success':True,
+            })
+        else:
+            return render(request, 'customer/index.html', {
+                'success':False,
+            })
+    return render(request, 'admin/authentication/login.html')
