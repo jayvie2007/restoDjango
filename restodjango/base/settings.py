@@ -156,5 +156,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'jresto/static/product')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Modify admin authentication
-AUTH_USER_MODEL = 'jresto.CustomerDetails'
+AUTH_USER_MODEL = 'jresto.CustomUser'
 LOGIN_URL = 'customer_login'

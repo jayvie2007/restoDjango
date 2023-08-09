@@ -16,8 +16,7 @@ admin.site.register(Food, Product)
 admin.site.register(Drink, Product)
 admin.site.register(Side, Product)
 
-admin.site.register(CustomerDetails)
-admin.site.register(CustomAdmin)
+admin.site.register(CustomUser)
 admin.site.register(Wallet)
 
 admin.site.register(CustomerFeedback)

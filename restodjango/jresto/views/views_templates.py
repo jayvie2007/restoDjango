@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, logout, login
 
-from jresto.models import CustomerFeedback, CustomerDetails, Food, Drink, Side
+from jresto.models import CustomUser, CustomerFeedback, Food, Drink, Side
 from jresto.utils import *
 
 from constants.status_code import *
@@ -69,24 +69,25 @@ def register_customer(request):
         uid = generate_uid()
 
         if customer_password == customer_confirm_password:
-            if CustomerDetails.objects.filter(username = customer_username):
+            if CustomUser.objects.filter(username = customer_username):
                 print("user exist")
                 return render(request, 'customer/authentication/register.html', {
                     'register_error': True,
                     'message': username_exist,
                 })
-            if CustomerDetails.objects.filter(email = customer_email):
+            if CustomUser.objects.filter(email = customer_email):
                 print("email exist")
                 return render(request, 'customer/authentication/register.html', {
                     'register_error': True,
                     'message': email_exist,
                 })
             else:
-                new_customer = CustomerDetails.objects.create(
+                new_customer = CustomUser.objects.create(
                     uid = f"customer__{uid}",
                     first_name = customer_firstname,
                     middle_name = customer_middlename,
                     last_name = customer_lastname,
+                    user_level = "Customer",
                     gender = customer_gender,
                     email = customer_email,
                     contact_number = customer_number,
@@ -115,6 +116,7 @@ def login_customer(request):
         if users is not None:
             login(request, users)
             print("customer login!")
+            print(users.username)
             return render(request, 'customer/index.html', {
                 'success':True
             })

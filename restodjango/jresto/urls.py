@@ -1,11 +1,11 @@
 from django.urls import path, include
 
-from .views import views_api_authentication, views_api_templates, views_authentication, views_templates 
+from .views import views_api_authentication, views_api_templates, views_templates 
  
 ###### API_AUTHENTICATION ######
 urlpatterns = [
-    path('api/authentication/admin', views_api_authentication.GetAdminApi.as_view(), name="dashboard"),
-    path('api/authentication/customer', views_api_authentication.GetCustomerApi.as_view(), name="dashboard"),
+    path('api/authentication/admin', views_api_authentication.GetAdminApi.as_view(), name="adminAPI"),
+    path('api/authentication/customer', views_api_authentication.GetCustomerApi.as_view(), name="customerAPI"),
 ]
 
 ###### API_TEMPLATES ######
@@ -30,9 +30,6 @@ urlpatterns += [
 
 ###### AUTHENTICATION ######
 urlpatterns += [
-    path('staff/register', views_authentication.register_staff, name="admin_register"),
-    path('staff/login', views_authentication.login_staff, name="admin_login"),
-
     path('jresto/register', views_templates.register_customer, name="customer_register"),
     path('jresto/login', views_templates.login_customer, name="customer_login"),
     path('jresto/logout', views_templates.logout_customer, name="users_logout"),

@@ -1,11 +1,11 @@
-from jresto.models import CustomAdmin, CustomerDetails, Wallet
+from jresto.models import CustomUser, Wallet
 from rest_framework import serializers
 
 class CustomerGetSerializer(serializers.ModelSerializer):
     cash = serializers.SerializerMethodField()
 
     class Meta:
-        model = CustomerDetails
+        model = CustomUser
         fields = ['uid', 'username' ,'first_name', 'middle_name', 'last_name', 'gender', 'email', 'contact_number', 'save_password', 'cash', 'date_created', 'date_updated',]
 
     def get_cash(self, obj):
@@ -15,10 +15,10 @@ class CustomerGetSerializer(serializers.ModelSerializer):
             return wallet_instance.cash
 class AdminGetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomAdmin
+        model = CustomUser
         fields = '__all__'
 
 class AdminLoginSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomAdmin
+        model = CustomUser
         fields = ['username', 'email', 'password']
