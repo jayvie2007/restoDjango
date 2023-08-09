@@ -9,7 +9,11 @@
         <div class="w-96 p-6 shadow-lg bg-gray-200 rounded-md "> 
             <h1 class="text-3x1 block text-center font-semibold">{{side.name}}</h1>
             <h1 class="text-3x1 block text-center font-bold">{{side.price}} PHP</h1>
-            <img class="hover:opacity-75 w-full" src="{{side.imageURL}}"></a>
+            {% if side.imageURL %}
+            <img class="hover:opacity-75" src="{{side.imageURL}}"></a>
+            {% else %}
+            <img class="hover:opacity-75 w-full" src="{% static 'img/food/side/1.png' %}"></a>
+            {% endif %}
             <div class="mt-5">
                 <a href="{% url 'menu_food' %}"><button class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 px-5 hover:bg-red-700 hover:border-red-700 rounded-md w-full">SELECT</button></a>
             </div>

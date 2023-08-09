@@ -15,7 +15,7 @@ class GetCustomerFeedback(APIView):
     def get(self, request):
         customer_feedback = CustomerFeedback.objects.all()
         feedback_serializers = FeedbackGetSerializer(customer_feedback, many=True)
-        return Response({"Food List": feedback_serializers.data})
+        return Response({"Feedback": feedback_serializers.data})
 
 class GetFoodAPIView(APIView):
     def get(self, request):
@@ -40,7 +40,7 @@ class PostFoodAPIView(APIView):
             errors['name']=(f"The product {product_name} is already added!")
             return Response(data={"message":errors}, status=bad_request)
 
-        product_uid = generate_fooduid()
+        product_uid = f"food__{generate_uid()}"
         request.data._mutable=True
         request.data['product_id'] = product_uid
         request.data._mutable=False
@@ -117,7 +117,7 @@ class PostDrinkAPIView(APIView):
             errors['name']=(f"The product {product_name} is already added!")
             return Response(data={"message":errors}, status=bad_request)
 
-        product_uid = generate_drinkuid()
+        product_uid = f"drinks___{generate_uid()}"
         request.data._mutable=True
         request.data['product_id'] = product_uid
         request.data._mutable=False
@@ -186,7 +186,7 @@ class PostSideAPIView(APIView):
             errors['name']=(f"The product {product_name} is already added!")
             return Response(data={"message":errors}, status=bad_request)
 
-        product_uid = generate_sideuid()
+        product_uid = f"side__{generate_uid()}"
         request.data._mutable=True
         request.data['product_id'] = product_uid
         request.data._mutable=False
