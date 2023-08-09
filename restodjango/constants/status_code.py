@@ -19,7 +19,7 @@ product_added = ['Product has been successfully added']
 login_success = ['Successfully Login']
 incorrect_value = ['Incorrect input']
 deleted = ['Successfully Deleted']
-message_success = ['Message has been successfully sent!']
+message_success = 'Message has been successfully sent!'
 
 #################VALIDATION###################
 
