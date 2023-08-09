@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
@@ -36,7 +36,7 @@ def register_staff(request):
                 })
             else:
                 new_admin = CustomAdmin.objects.create(
-                    uid = f"admin__{generate_uid}",
+                    uid = f"admin__{uid}",
                     first_name = admin_firstname,
                     last_name = admin_lastname,
                     email = admin_email,

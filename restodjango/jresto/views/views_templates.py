@@ -83,7 +83,7 @@ def register_customer(request):
                 })
             else:
                 new_customer = CustomerDetails.objects.create(
-                    uid = f"customer__{generate_uid}",
+                    uid = f"customer__{uid}",
                     first_name = customer_firstname,
                     middle_name = customer_middlename,
                     last_name = customer_lastname,

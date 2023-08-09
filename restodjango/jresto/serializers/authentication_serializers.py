@@ -6,7 +6,7 @@ class CustomerGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomerDetails
-        fields = ['uid', 'first_name', 'middle_name', 'last_name', 'gender', 'email', 'contact_number', 'save_password', 'cash', 'date_created', 'date_updated',]
+        fields = ['uid', 'username' ,'first_name', 'middle_name', 'last_name', 'gender', 'email', 'contact_number', 'save_password', 'cash', 'date_created', 'date_updated',]
 
     def get_cash(self, obj):
             # Retrieve the associated Wallet instance for the current customer object
