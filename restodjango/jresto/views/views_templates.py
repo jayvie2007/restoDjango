@@ -96,9 +96,7 @@ def register_customer(request):
                     save_password = customer_password,
                 )
                 print("Successfully created a new customer")
-                return render(request, 'customer/authentication/login.html', {
-                    'success':True,
-                })
+                return redirect('customer_login')
         else:
             print("wrong pass")
             return render(request, 'customer/authentication/register.html', {
@@ -117,9 +115,7 @@ def login_customer(request):
             login(request, users)
             print("customer login!")
             print(users.username)
-            return render(request, 'customer/index.html', {
-                'success':True
-            })
+            return redirect('index')
         else:
             print("customer failed")
             return render(request, 'customer/authentication/login.html', {
