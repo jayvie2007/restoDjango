@@ -1,4 +1,4 @@
-from jresto.models import CustomUser, Wallet
+from jresto.models import CustomUser, Customer
 from rest_framework import serializers
 
 class CustomerGetSerializer(serializers.ModelSerializer):
@@ -10,7 +10,7 @@ class CustomerGetSerializer(serializers.ModelSerializer):
 
     def get_cash(self, obj):
             # Retrieve the associated Wallet instance for the current customer object
-            wallet_instance = Wallet.objects.get(customer=obj)
+            wallet_instance = Customer.objects.get(customer=obj)
             # Get the cash value from the Wallet instance
             return wallet_instance.cash
 class AdminGetSerializer(serializers.ModelSerializer):

@@ -143,22 +143,22 @@ class CustomUser (AbstractUser):
     date_updated = models.DateField(default=date.today)
 
     def __str__(self):
-        return f"Customer: {self.first_name} {self.last_name}"
+        return f"{self.user_level}: {self.first_name} {self.last_name}"
     
     def save(self, *args, **kwargs):
         created = not self.pk  # Check if the instance is being created for the first time
         super().save(*args, **kwargs)  # Call the original save() method
 
-        if created:
-            Wallet.objects.create(
+        if created and self.user_level == "Customer":
+            Customer.objects.create(
                 customer=self,
                 cash=0
             )
 
     class Meta:
         verbose_name = "User"
-    
-class Wallet(models.Model):
+
+class Customer(models.Model):
     customer = models.OneToOneField(CustomUser,on_delete=models.CASCADE,primary_key=True,related_name='wallet')
     cash = models.IntegerField(default=0)
 
