@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 
 from jresto.models import CustomUser, CustomerFeedback, Food, Drink, Side
 from jresto.utils import *
@@ -96,7 +96,7 @@ def register_customer(request):
                     save_password = customer_password,
                 )
                 print("Successfully created a new customer")
-                return redirect('customer_login')
+                return redirect('user_login')
         else:
             print("wrong pass")
             return render(request, 'customer/authentication/register.html', {
@@ -104,6 +104,50 @@ def register_customer(request):
                 'message': password_not_match
             })
     return render(request, 'customer/authentication/register.html')
+
+def edit_customer(request, uid):
+    if request.method == 'POST':
+        users = CustomUser.objects.get(uid=uid)
+        user_first_name = request.POST['user_first_name']
+        user_middle_name = request.POST['user_middle_name']
+        user_last_name = request.POST['user_last_name']
+        user_pass = request.POST['user_pass']
+        user_confirm_pass = request.POST['user_confirm_pass']
+
+        if not user_pass and not user_confirm_pass:
+            return render(request, 'customer/authentication/edit.html', {
+            'users': users,
+            'success': False,
+            'message':"Please enter a password!",
+        })
+
+        elif user_pass == user_confirm_pass:
+            print(user_pass)
+            users.first_name = user_first_name
+            users.middle_name = user_middle_name
+            users.last_name = user_last_name
+            users.password = make_password(user_pass)
+            users.save_password = user_pass
+            users.date_updated = date.today()
+            users.save()
+            login(request, users)
+            
+            return render(request, 'customer/authentication/edit.html', {
+            'users': users,
+            'success': True,
+            'message':"Success Updating",
+            })
+        else:
+            return render(request, 'customer/authentication/edit.html', {
+            'users': users,
+            'success': False,
+            'message':password_not_match,
+            })
+    else:
+        users = CustomUser.objects.get(uid=uid)
+        return render(request, 'customer/authentication/edit.html', {
+            'users': users,
+        })
 
 def login_customer(request):
     if request.method == 'POST':

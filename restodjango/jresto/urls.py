@@ -30,9 +30,10 @@ urlpatterns += [
 
 ###### AUTHENTICATION ######
 urlpatterns += [
-    path('jresto/register', views_templates.register_customer, name="customer_register"),
-    path('jresto/login', views_templates.login_customer, name="customer_login"),
-    path('jresto/logout', views_templates.logout_customer, name="users_logout"),
+    path('jresto/edit/<str:uid>', views_templates.edit_customer, name="user_edit"),
+    path('jresto/register', views_templates.register_customer, name="user_register"),
+    path('jresto/login', views_templates.login_customer, name="user_login"),
+    path('jresto/logout', views_templates.logout_customer, name="user_logout"),
 ]
 
 ###### TEMPLATES ######

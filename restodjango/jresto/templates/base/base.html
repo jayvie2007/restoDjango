@@ -19,11 +19,12 @@
     <li><a href="{% url 'menu' %}">Menu</a></li>
     <li><a href="{% url 'contact_us' %}">Contact</a></li>
   </ul>
-  <div class="mt-1">
+  <div class="mt-1 flex justify-between gap-10">
     {% if request.user.is_authenticated %}
-    <a href="{% url 'users_logout' %}">Logout</a>
+    <a href="{% url 'user_edit' request.user.uid %}">{{request.user.username}}</a>
+    <a href="{% url 'user_logout' %}">Logout</a>
     {% else %}
-    <a href="{% url 'customer_login' %}">Login</a>
+    <a href="{% url 'user_login' %}">Login</a>
     {% endif %}
   </div>
 </div>

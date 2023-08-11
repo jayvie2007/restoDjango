@@ -27,13 +27,9 @@
                     <label for="password" class="block test-base mb-2">Password:</label>
                     <input type="password" id="customer_pass" name="customer_pass" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                 </div>
-                <div class="mt-3 flex justify-between items-center">
-                    <div class="">
-                        <input type="checkbox" name="remember_user">
-                        <label for="Remember Me?">Remember Me</label>
-                    </div>
+                <div class="mt-3 flex justify-end">
                     <div>
-                        <a href="{% url 'customer_register' %}" class="text-indigo-950 ">Don't have an account?</a>
+                        <a href="{% url 'user_register' %}" class="text-indigo-950 ">Don't have an account?</a>
                     </div>
                 </div>
                 <div class="mt-5">
