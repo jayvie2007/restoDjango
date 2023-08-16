@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
+from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth.decorators import login_required
 
 from jresto.models import CustomUser, CustomerFeedback, Food, Drink, Side
 from jresto.utils import *
+
 
 from constants.status_code import *
 
@@ -105,6 +107,7 @@ def register_customer(request):
             })
     return render(request, 'customer/authentication/register.html')
 
+@login_required
 def edit_customer(request, uid):
     if request.method == 'POST':
         users = CustomUser.objects.get(uid=uid)
@@ -171,3 +174,117 @@ def logout_customer(request):
     print("logout")
     logout(request)
     return redirect('index')
+
+def admin_menu(request):
+    return render(request, 'admin/menu.html')
+
+def admin_menu_product(request):
+    foods = Food.objects.all()
+    drinks = Drink.objects.all()
+    sides = Side.objects.all()
+
+    context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
+    return render(request, 'admin/display_product.html', context)
+
+def admin_add_menu(request):
+    if request.method =="POST":
+        product_name = request.POST['product_name']
+        product_price = request.POST['product_price']
+        product_type = request.POST['product_type']
+        product_description = request.POST['product_description']
+        product_image = request.POST['product_image']
+        product_uid = generate_uid()
+
+        print("Type: ", product_type)
+        if product_type == "Meal":
+            if product_name and Food.objects.filter(name=product_name).count() != 0:
+                message=(f"{product_name} is currently existing in type {product_type}")
+                return render(request, 'admin/add_product.html', {
+                    'message':message,
+                    'success':False,
+                })
+            else:
+                new_products = Food(
+                    product_id = f"food__{product_uid}",
+                    name = product_name,
+                    price = product_price,
+                    description = product_description,
+                    #picture = product_image,
+                    date_created = date.today(),
+                )
+                new_products.save()
+                print("Meal success")
+                message=(f"{product_name} has been added in type {product_type}")
+                return render(request, 'admin/add_product.html', {
+                    'success':True,
+                    'message':message,
+                })
+        
+        elif product_type == "Drink":
+            if product_name and Drink.objects.filter(name=product_name).count() != 0:
+                message=(f"{product_name} is currently existing in type {product_type}")
+                return render(request, 'admin/add_product.html', {
+                    'message':message,
+                    'success':False,
+                })
+            else:  
+                new_products = Drink(
+                    product_id = f"drink__{product_uid}",
+                    name = product_name,
+                    price = product_price,
+                    description = product_description,
+                    #picture = product_image,
+                    date_created = date.today(),
+                )
+                new_products.save()
+                print("Drink")
+                message=(f"{product_name} has been added in type {product_type}")
+                return render(request, 'admin/add_product.html', {
+                    'message':message,
+                    'success':True,
+                })
+    
+        elif product_type == "Side":
+            if product_name and Side.objects.filter(name=product_name).count() != 0:
+                message=(f"{product_name} is currently existing in {product_type}")
+                return render(request, 'admin/add_product.html', {
+                    'message':message,
+                    'success':False,
+                })
+            else:
+                new_products = Side(
+                    product_id = f"side__{product_uid}",
+                    name = product_name,
+                    price = product_price,
+                    description = product_description,
+                    #picture = product_image,
+                    date_created = date.today(),
+                )
+                new_products.save()
+                print("Side")
+                message=(f"{product_name} has been added in type {product_type}")
+                return render(request, 'admin/add_product.html', {
+                    'message':message,
+                    'success':True,
+                })
+        message = ("Please choose a product type!")
+        return render(request, 'admin/add_product.html',{
+            'message':message,
+            'success':False
+        })
+    return render(request, 'admin/add_product.html')
+
+def admin_display_menu(request):
+    foods = Food.objects.all()
+    drinks = Drink.objects.all()
+    sides = Side.objects.all()
+
+    context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
+    print(context)
+    return render(request, 'admin/display_product.html', context)
+
+def admin_edit_menu(request, product_id):
+    pass
+
+def admin_delete_menu(request, product_id):
+    pass

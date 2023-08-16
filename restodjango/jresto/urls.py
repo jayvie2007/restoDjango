@@ -48,3 +48,12 @@ urlpatterns += [
     path('jresto/contact-us', views_templates.contact, name="contact_us"),
 ]
 
+###### ADMIN ######
+urlpatterns += [
+    path('jresto/admin/menu', views_templates.admin_menu, name="admin_menu"),
+    path('jresto/admin/product/', views_templates.admin_display_menu, name="menu_product"),
+    path('jresto/admin/product/add', views_templates.admin_add_menu, name="menu_product_add"),
+    path('jresto/admin/edit/product/<str:product_id>', views_templates.admin_edit_menu, name="menu_product_edit"),
+    path('jresto/admin/delete/product/<str:product_id>', views_templates.admin_delete_menu, name="menu_product_delete"),
+]
+

@@ -11,12 +11,15 @@ class Product(admin.ModelAdmin):
             obj.delete_image()
 
         obj.save()
+        
+class User(admin.ModelAdmin):
+    readonly_fields =('uid',)
 
 admin.site.register(Food, Product)
 admin.site.register(Drink, Product)
 admin.site.register(Side, Product)
 
-admin.site.register(CustomUser)
+admin.site.register(CustomUser, User)
 admin.site.register(Customer)
 
 admin.site.register(CustomerFeedback)

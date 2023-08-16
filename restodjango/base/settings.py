@@ -157,4 +157,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Modify admin authentication
 AUTH_USER_MODEL = 'jresto.CustomUser'
-LOGIN_URL = 'customer_login'
+LOGIN_URL = 'user_login'
