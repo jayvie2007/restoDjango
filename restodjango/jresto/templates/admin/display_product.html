@@ -3,31 +3,49 @@
 {% block title %} Admin Products {% endblock %}
 {% block body %}
 
-<table class="flex justify-center items-center table-fixed h-full">
-    <thead>
+<div class="flex flex-col justify-center items-center h-screen">
+<div class="flex justify-center border-2 border-black w-1/2">
+
+<table class="table w-full ">
+    <thead class="text-left">
       <tr>
-        <th>Song</th>
-        <th>Artist</th>
-        <th>Year</th>
+        <th>UID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th class="text-center">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-        <td>Malcolm Lockyer</td>
-        <td>1961</td>
-      </tr>
-      <tr>
-        <td>Witchy Woman</td>
-        <td>The Eagles</td>
-        <td>1972</td>
-      </tr>
-      <tr>
-        <td>Shining Star</td>
-        <td>Earth, Wind, and Fire</td>
-        <td>1975</td>
-      </tr>
+    {% for food in foods %}
+        <tr class="border-t-2 border-b-2 border-black">
+            <td>{{food.product_id}}</td>
+            <td>{{food.name}}</td>
+            <td>{{food.price}}</td>
+            <td><button><i class="fa-solid fa-pen-to-square"></i></button></td>
+            <td><button><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+    {% endfor %}
+    {% for drink in drinks %}
+        <tr class="border-t-2 border-b-2 border-black">
+            <td>{{drink.product_id}}</td>
+            <td>{{drink.name}}</td>
+            <td>{{drink.price}}</td>
+            <td><button><i class="fa-solid fa-pen-to-square"></i></button></td>
+            <td><button><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+    {% endfor %}
+    {% for side in sides %}
+        <tr class="border-t-2 border-black">
+            <td>{{side.product_id}}</td>
+            <td>{{side.name}}</td>
+            <td>{{side.price}}</td>
+            <td><button><i class="fa-solid fa-pen-to-square"></i></button></td>
+            <td><button><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+    {% endfor %}
     </tbody>
+    
   </table>
-
+</div>
+</div>
 {% endblock %}
