@@ -20,6 +20,11 @@ permission_choices = (
     ('Admin', 'Admin'),
     ('Customer', 'Customer'),
 )
+product_choices = (
+    ('Meal', 'Meal'),
+    ('Drink', 'Drink'),
+    ('Side', 'Side'),
+)
 
 contact_number_regex = r'^(\+[0-9]{1,12})|[0-9]{1,11}$'
 contact_number_validator = RegexValidator(
@@ -37,8 +42,9 @@ class CustomerFeedback(models.Model):
     def __str__(self):
         return f"{self.id}. {self.name}"
 
-class Food(models.Model):
-    product_id = models.CharField(max_length=16, default=f"food__{generate_uid()}")
+class Product(models.Model):
+    product_id = models.CharField(max_length=16, default="")
+    product_type = models.CharField(max_length=15, choices=product_choices, default="")
     name = models.CharField(max_length=25)
     picture = models.ImageField(blank=True, null=True)
     price = models.IntegerField(default=0)
@@ -47,7 +53,7 @@ class Food(models.Model):
     date_updated = models.DateField(default=date.today)
 
     def __str__(self):
-        return f"Food: {self.name}" 
+        return f"{self.product_type}: {self.name}" 
     
     def save(self, *args, **kwargs):
         self.date_updated = date.today()
@@ -68,68 +74,6 @@ class Food(models.Model):
             self.picture = None
             self.save(update_fields=['picture'])
     
-class Drink(models.Model):
-    product_id = models.CharField(max_length=16, default=f"drink__{generate_uid()}")
-    name = models.CharField(max_length=25, default="")
-    picture = models.ImageField(blank=True, null=True)
-    price = models.IntegerField(default=0)
-    description = models.CharField(max_length=100, default="")
-    date_created = models.DateField(default=date.today)
-    date_updated = models.DateField(default=date.today)
-
-    def __str__(self):
-        return f"Drink: {self.name}"  
-    
-    def save(self, *args, **kwargs):
-        self.date_updated = date.today()
-        super().save(*args, **kwargs)
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.picture.url
-        except:
-            url = ''
-        return url   
-    
-    def delete_image(self):
-        if self.picture:
-            if os.path.exists(self.picture.path):
-                os.remove(self.picture.path)
-            self.picture = None
-            self.save(update_fields=['picture'])
-    
-class Side(models.Model):
-    product_id = models.CharField(max_length=16, default=f"side__{generate_uid()}")
-    name = models.CharField(max_length=25, default="")
-    picture = models.ImageField(blank=True, null=True)
-    price = models.IntegerField(default=0)
-    description = models.CharField(max_length=100, default="")
-    date_created = models.DateField(default=date.today)
-    date_updated = models.DateField(default=date.today)
-
-    def __str__(self):
-        return f"Side: {self.name}"
-    
-    def save(self, *args, **kwargs):
-        self.date_updated = date.today()
-        super().save(*args, **kwargs)
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.picture.url
-        except:
-            url = ''
-        return url   
-    
-    def delete_image(self):
-        if self.picture:
-            if os.path.exists(self.picture.path):
-                os.remove(self.picture.path)
-            self.picture = None
-            self.save(update_fields=['picture'])
-
 class CustomUser (AbstractUser):
     uid = models.CharField(max_length=20, editable=False)
     middle_name = models.CharField(max_length=50, default="", blank=True)

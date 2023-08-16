@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 
-from jresto.models import CustomUser, CustomerFeedback, Food, Drink, Side
+from jresto.models import CustomUser, CustomerFeedback, Product
 from jresto.utils import *
 
 
@@ -18,20 +18,19 @@ def menu(request):
     return render(request, 'customer/menu.html')
 
 def food(request):
-    foods = Food.objects.all()
-    
+    foods = Product.objects.filter(product_type="Meal")
     return render(request, 'customer/menu/food.html', {
         'foods':foods,
     })
 
 def drink(request):
-    drinks = Drink.objects.all()
+    drinks = Product.objects.filter(product_type="Drink")
     return render(request, 'customer/menu/drink.html', {
         'drinks':drinks,
     })
 
 def side(request):
-    sides = Side.objects.all()
+    sides = Product.objects.filter(product_type="Side")
     return render(request, 'customer/menu/side.html', {
         'sides':sides,
     })
@@ -125,7 +124,6 @@ def edit_customer(request, uid):
         })
 
         elif user_pass == user_confirm_pass:
-            print(user_pass)
             users.first_name = user_first_name
             users.middle_name = user_middle_name
             users.last_name = user_last_name
@@ -161,7 +159,6 @@ def login_customer(request):
         if users is not None:
             login(request, users)
             print("customer login!")
-            print(users.username)
             return redirect('index')
         else:
             print("customer failed")
@@ -178,14 +175,6 @@ def logout_customer(request):
 def admin_menu(request):
     return render(request, 'admin/menu.html')
 
-def admin_menu_product(request):
-    foods = Food.objects.all()
-    drinks = Drink.objects.all()
-    sides = Side.objects.all()
-
-    context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
-    return render(request, 'admin/display_product.html', context)
-
 def admin_add_menu(request):
     if request.method =="POST":
         product_name = request.POST['product_name']
@@ -195,17 +184,17 @@ def admin_add_menu(request):
         product_image = request.POST['product_image']
         product_uid = generate_uid()
 
-        print("Type: ", product_type)
         if product_type == "Meal":
-            if product_name and Food.objects.filter(name=product_name).count() != 0:
+            if product_name and Product.objects.filter(name=product_name, product_type=product_type).count() != 0:
                 message=(f"{product_name} is currently existing in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'message':message,
                     'success':False,
                 })
             else:
-                new_products = Food(
+                new_products = Product(
                     product_id = f"food__{product_uid}",
+                    product_type = product_type,
                     name = product_name,
                     price = product_price,
                     description = product_description,
@@ -221,15 +210,16 @@ def admin_add_menu(request):
                 })
         
         elif product_type == "Drink":
-            if product_name and Drink.objects.filter(name=product_name).count() != 0:
+            if product_name and Product.objects.filter(name=product_name, product_type=product_type).count() != 0:
                 message=(f"{product_name} is currently existing in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'message':message,
                     'success':False,
                 })
             else:  
-                new_products = Drink(
+                new_products = Product(
                     product_id = f"drink__{product_uid}",
+                    product_type=product_type,
                     name = product_name,
                     price = product_price,
                     description = product_description,
@@ -245,15 +235,16 @@ def admin_add_menu(request):
                 })
     
         elif product_type == "Side":
-            if product_name and Side.objects.filter(name=product_name).count() != 0:
+            if product_name and Product.objects.filter(name=product_name, product_type=product_type).count() != 0:
                 message=(f"{product_name} is currently existing in {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'message':message,
                     'success':False,
                 })
             else:
-                new_products = Side(
+                new_products = Product(
                     product_id = f"side__{product_uid}",
+                    product_type=product_type,
                     name = product_name,
                     price = product_price,
                     description = product_description,
@@ -275,9 +266,9 @@ def admin_add_menu(request):
     return render(request, 'admin/add_product.html')
 
 def admin_display_menu(request):
-    foods = Food.objects.all()
-    drinks = Drink.objects.all()
-    sides = Side.objects.all()
+    foods = Product.objects.filter(product_type="Meal")
+    drinks = Product.objects.filter(product_type="Drink")
+    sides = Product.objects.filter(product_type="Side")
 
     context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
     print(context)

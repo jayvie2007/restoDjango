@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 
-class Product(admin.ModelAdmin):
+class Product_Admin(admin.ModelAdmin):
     readonly_fields = ('product_id','date_created','date_updated')
 
     def save_model(self, request, obj, form, change):
@@ -15,9 +15,7 @@ class Product(admin.ModelAdmin):
 class User(admin.ModelAdmin):
     readonly_fields =('uid',)
 
-admin.site.register(Food, Product)
-admin.site.register(Drink, Product)
-admin.site.register(Side, Product)
+admin.site.register(Product, Product_Admin)
 
 admin.site.register(CustomUser, User)
 admin.site.register(Customer)
