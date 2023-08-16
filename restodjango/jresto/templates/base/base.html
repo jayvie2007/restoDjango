@@ -20,9 +20,14 @@
     <li><a href="{% url 'contact_us' %}">Contact</a></li>
   </ul>
   <div class="mt-1 flex justify-between gap-10">
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated and request.user.user_level == "Customer" %}
     <a href="{% url 'user_edit' request.user.uid %}">{{request.user.username}}</a>
     <a href="{% url 'user_logout' %}">Logout</a>
+
+    {% elif request.user.is_authenticated and request.user.user_level == "Admin" %}
+    <a href="{% url 'admin_menu' %}">{{request.user.user_level}}</a>
+    <a href="{% url 'user_logout' %}">Logout</a>
+    
     {% else %}
     <a href="{% url 'user_login' %}">Login</a>
     {% endif %}
