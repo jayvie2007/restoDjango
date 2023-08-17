@@ -12,6 +12,8 @@
         <th>UID</th>
         <th>Name</th>
         <th>Price</th>
+        <th>Date Created</th>
+        <th>Date Updated</th>
         <th class="text-center">Action</th>
       </tr>
     </thead>
@@ -21,6 +23,8 @@
             <td>{{food.product_id}}</td>
             <td>{{food.name}}</td>
             <td>{{food.price}}</td>
+            <td>{{food.date_created}}</td>
+            <td>{{food.date_updated}}</td>
             <td><a href="{% url 'menu_product_edit' food.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
             <td><a href="{% url 'menu_product_delete' food.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>
@@ -30,6 +34,8 @@
             <td>{{drink.product_id}}</td>
             <td>{{drink.name}}</td>
             <td>{{drink.price}}</td>
+            <td>{{drink.date_created}}</td>
+            <td>{{drink.date_updated}}</td>
             <td><a href="{% url 'menu_product_edit' drink.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
             <td><a href="{% url 'menu_product_delete' drink.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>
@@ -39,6 +45,8 @@
             <td>{{side.product_id}}</td>
             <td>{{side.name}}</td>
             <td>{{side.price}}</td>
+            <td>{{side.date_created}}</td>
+            <td>{{side.date_updated}}</td>
             <td><a href="{% url 'menu_product_edit' side.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
             <td><a href="{% url 'menu_product_delete' side.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>

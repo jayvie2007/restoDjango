@@ -281,7 +281,7 @@ def admin_edit_menu(request, product_id):
         product_type = request.POST['product_type']
         product_description = request.POST['product_description']
         product_image = request.POST['product_image']
-
+    
         products.name = product_name
         products.price = product_price
         products.product_type = product_type
