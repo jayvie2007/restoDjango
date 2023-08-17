@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from jresto.models import CustomUser, CustomerFeedback, Product
 from jresto.utils import *
 
@@ -265,6 +266,7 @@ def admin_add_menu(request):
         })
     return render(request, 'admin/add_product.html')
 
+@login_required
 def admin_display_menu(request):
     foods = Product.objects.filter(product_type="Meal")
     drinks = Product.objects.filter(product_type="Drink")
@@ -273,35 +275,50 @@ def admin_display_menu(request):
     context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
     return render(request, 'admin/display_product.html', context)
 
+@login_required
 def admin_edit_menu(request, product_id):
-    if request.method == 'POST':
-        products = Product.objects.get(product_id=product_id)
-        product_name = request.POST['product_name']
-        product_price = request.POST['product_price']
-        product_type = request.POST['product_type']
-        product_description = request.POST['product_description']
-        product_image = request.POST['product_image']
-    
-        products.name = product_name
-        products.price = product_price
-        products.product_type = product_type
-        products.description = product_description
-        products.date_updated = date.today()
-        #products.image = product_image
-        products.save()
+    try:
+        if request.method == 'POST':
+            products = Product.objects.get(product_id=product_id)
+            product_name = request.POST['product_name']
+            product_price = request.POST['product_price']
+            product_type = request.POST['product_type']
+            product_description = request.POST['product_description']
+            product_image = request.POST['product_image']
+        
+            products.name = product_name
+            products.price = product_price
+            products.product_type = product_type
+            products.description = product_description
+            products.date_updated = date.today()
+            #products.image = product_image
+            products.save()
 
-        print("save?")
+            print("save?")
+            return render(request, 'admin/edit_product.html', {
+                'products':products,
+                'success':True,
+                'message':"Successfully Edited!"
+            })
+    except Product.DoesNotExist:
+        messages = ("Product not found")
         return render(request, 'admin/edit_product.html', {
-            'products':products,
-            'success':True,
-            'message':"Successfully Edited!"
-        })
-    
+        'products':products,
+        'messages':messages,
+    })
+        
     products = Product.objects.get(product_id=product_id)
     print("hi")
     return render(request, 'admin/edit_product.html', {
         'products':products,
     })
 
+@login_required
 def admin_delete_menu(request, product_id):
-    pass
+    try:
+        product = Product.objects.get(product_id=product_id)
+        product.delete()
+        messages = ("Successfully Delete")
+    except Product.DoesNotExist:
+        messages("Product not found")
+    return HttpResponseRedirect(reverse('menu_product'))
