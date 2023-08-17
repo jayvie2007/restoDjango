@@ -174,9 +174,13 @@ def logout_customer(request):
     return redirect('index')
 
 def admin_menu(request):
+    if not request.user.user_level == "Admin":
+        return redirect('index')
     return render(request, 'admin/menu.html')
 
 def admin_add_menu(request):
+    if not request.user.user_level == "Admin":
+        return redirect('index')
     if request.method =="POST":
         product_name = request.POST['product_name']
         product_price = request.POST['product_price']
@@ -266,8 +270,9 @@ def admin_add_menu(request):
         })
     return render(request, 'admin/add_product.html')
 
-@login_required
 def admin_display_menu(request):
+    if not request.user.user_level == "Admin":
+        return redirect('index')
     foods = Product.objects.filter(product_type="Meal")
     drinks = Product.objects.filter(product_type="Drink")
     sides = Product.objects.filter(product_type="Side")
@@ -275,7 +280,6 @@ def admin_display_menu(request):
     context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
     return render(request, 'admin/display_product.html', context)
 
-@login_required
 def admin_edit_menu(request, product_id):
     try:
         if request.method == 'POST':
@@ -304,7 +308,7 @@ def admin_edit_menu(request, product_id):
         messages = ("Product not found")
         return render(request, 'admin/edit_product.html', {
         'products':products,
-        'messages':messages,
+        'messages':products,
     })
         
     products = Product.objects.get(product_id=product_id)
@@ -313,7 +317,6 @@ def admin_edit_menu(request, product_id):
         'products':products,
     })
 
-@login_required
 def admin_delete_menu(request, product_id):
     try:
         product = Product.objects.get(product_id=product_id)
