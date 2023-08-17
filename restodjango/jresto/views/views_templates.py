@@ -4,9 +4,9 @@ from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
 from jresto.models import CustomUser, CustomerFeedback, Product
 from jresto.utils import *
-
 
 from constants.status_code import *
 
@@ -283,6 +283,7 @@ def admin_display_menu(request):
 def admin_edit_menu(request, product_id):
     try:
         if request.method == 'POST':
+            errors = {}
             products = Product.objects.get(product_id=product_id)
             product_name = request.POST['product_name']
             product_price = request.POST['product_price']
@@ -298,7 +299,6 @@ def admin_edit_menu(request, product_id):
             #products.image = product_image
             products.save()
 
-            print("save?")
             return render(request, 'admin/edit_product.html', {
                 'products':products,
                 'success':True,
@@ -308,11 +308,10 @@ def admin_edit_menu(request, product_id):
         messages = ("Product not found")
         return render(request, 'admin/edit_product.html', {
         'products':products,
-        'messages':products,
+        'messages':messages,
     })
         
     products = Product.objects.get(product_id=product_id)
-    print("hi")
     return render(request, 'admin/edit_product.html', {
         'products':products,
     })

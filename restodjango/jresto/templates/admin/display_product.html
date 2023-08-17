@@ -4,6 +4,7 @@
 {% block body %}
 
 <div class="flex flex-col justify-center items-center h-screen gap-5">
+    {% if success == False %}
     <div class="w-1/2 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert" id="dismissableAlert">
         <span class="block sm:inline">sample</span>
         <span class="absolute top-0 bottom-0 right-0 px-4 py-3" id="dismissButton">
@@ -11,14 +12,15 @@
         </span>
       </div>
       <script type="text/javascript" src="{% static 'js/alertmessage.js' %}"></script>
+      {% endif %}
     <div class="flex justify-center border-2 border-black w-1/2">
-    
         <table class="table w-full ">
             <thead class="text-left">
             <tr>
                 <th>UID</th>
                 <th>Name</th>
                 <th>Price</th>
+                <th>Type</th>
                 <th>Date Created</th>
                 <th>Date Updated</th>
                 <th class="text-center">Action</th>
@@ -30,6 +32,7 @@
                     <td>{{food.product_id}}</td>
                     <td>{{food.name}}</td>
                     <td>{{food.price}}</td>
+                    <td>{{food.product_type}}</td>
                     <td>{{food.date_created}}</td>
                     <td>{{food.date_updated}}</td>
                     <td><a href="{% url 'menu_product_edit' food.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
@@ -41,6 +44,7 @@
                     <td>{{drink.product_id}}</td>
                     <td>{{drink.name}}</td>
                     <td>{{drink.price}}</td>
+                    <td>{{drink.product_type}}</td>
                     <td>{{drink.date_created}}</td>
                     <td>{{drink.date_updated}}</td>
                     <td><a href="{% url 'menu_product_edit' drink.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
@@ -52,6 +56,7 @@
                     <td>{{side.product_id}}</td>
                     <td>{{side.name}}</td>
                     <td>{{side.price}}</td>
+                    <td>{{side.product_type}}</td>
                     <td>{{side.date_created}}</td>
                     <td>{{side.date_updated}}</td>
                     <td><a href="{% url 'menu_product_edit' side.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
