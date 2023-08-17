@@ -271,11 +271,37 @@ def admin_display_menu(request):
     sides = Product.objects.filter(product_type="Side")
 
     context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
-    print(context)
     return render(request, 'admin/display_product.html', context)
 
 def admin_edit_menu(request, product_id):
-    pass
+    if request.method == 'POST':
+        products = Product.objects.get(product_id=product_id)
+        product_name = request.POST['product_name']
+        product_price = request.POST['product_price']
+        product_type = request.POST['product_type']
+        product_description = request.POST['product_description']
+        product_image = request.POST['product_image']
+
+        products.name = product_name
+        products.price = product_price
+        products.product_type = product_type
+        products.description = product_description
+        products.date_updated = date.today()
+        #products.image = product_image
+        products.save()
+
+        print("save?")
+        return render(request, 'admin/edit_product.html', {
+            'products':products,
+            'success':True,
+            'message':"Successfully Edited!"
+        })
+    
+    products = Product.objects.get(product_id=product_id)
+    print("hi")
+    return render(request, 'admin/edit_product.html', {
+        'products':products,
+    })
 
 def admin_delete_menu(request, product_id):
     pass

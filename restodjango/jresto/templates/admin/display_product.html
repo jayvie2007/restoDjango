@@ -21,8 +21,8 @@
             <td>{{food.product_id}}</td>
             <td>{{food.name}}</td>
             <td>{{food.price}}</td>
-            <td><button><i class="fa-solid fa-pen-to-square"></i></button></td>
-            <td><button><i class="fa-solid fa-trash"></i></button></td>
+            <td><a href="{% url 'menu_product_edit' food.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td><a href="{% url 'menu_product_delete' food.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>
     {% endfor %}
     {% for drink in drinks %}
@@ -30,8 +30,8 @@
             <td>{{drink.product_id}}</td>
             <td>{{drink.name}}</td>
             <td>{{drink.price}}</td>
-            <td><button><i class="fa-solid fa-pen-to-square"></i></button></td>
-            <td><button><i class="fa-solid fa-trash"></i></button></td>
+            <td><a href="{% url 'menu_product_edit' drink.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td><a href="{% url 'menu_product_delete' drink.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>
     {% endfor %}
     {% for side in sides %}
@@ -39,8 +39,8 @@
             <td>{{side.product_id}}</td>
             <td>{{side.name}}</td>
             <td>{{side.price}}</td>
-            <td><button><i class="fa-solid fa-pen-to-square"></i></button></td>
-            <td><button><i class="fa-solid fa-trash"></i></button></td>
+            <td><a href="{% url 'menu_product_edit' side.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td><a href="{% url 'menu_product_delete' side.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>
     {% endfor %}
     </tbody>
