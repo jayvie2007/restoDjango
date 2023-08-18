@@ -335,3 +335,9 @@ def admin_delete_menu(request, product_id):
     except Product.DoesNotExist:
         messages("Product not found")
     return HttpResponseRedirect(reverse('menu_product'))
+
+def admin_feedback(request):
+    feedbacks = CustomerFeedback.objects.all()
+    return render(request, 'admin/check_feedback.html',{
+        'feedbacks':feedbacks,
+    })
