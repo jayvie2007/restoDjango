@@ -339,17 +339,17 @@ def admin_delete_menu(request, product_id):
     return HttpResponseRedirect(reverse('menu_product'))
 
 def admin_feedback(request):
-    page_row = 2
+    page_row = 1
     
     feedbacks = CustomerFeedback.objects.all()
 
-    pagination = Paginator(CustomerFeedback.objects.all(),page_row)
+    pagination = Paginator(CustomerFeedback.objects.all().order_by('id'),page_row)
     page = request.GET.get('page')
     feedback_list = pagination.get_page(page)
-
     return render(request, 'admin/check_feedback.html',{
         'feedbacks':feedbacks,
         'feedback_list':feedback_list,
+        'page_number':int(page),
     })
 
 def admin_feedback_delete(request, id):

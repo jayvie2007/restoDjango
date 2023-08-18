@@ -3,6 +3,20 @@
 {% block title %} Admin Feedback {% endblock %}
 {% block body %}
 
+<script>
+     const url = new URL(window.location);
+
+// Get the search parameters from the URL
+const searchParams = url.searchParams;
+
+// Access individual search parameters
+const queryParamValue = searchParams.get('page');
+
+// Output the search parameters to the console
+// console.log("Search parameters:", searchParams);
+console.log("Value of 'queryParamName':", queryParamValue);
+</script>
+
 <div class="flex flex-col justify-center items-center h-screen gap-5">
     {% if success == False %}
     <div class="w-1/2 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert" id="dismissableAlert">
@@ -44,7 +58,25 @@
                  
     </div>
     <div>
-    {% if feedback_list.has_previous %}
+        <a href="?page=1">First</a>
+        {% if feedback_list.has_previous %}
+        <a href="?page={{ feedback_list.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% for current_page in feedback_list.paginator %}
+        {% if current_page.number == page_number %}
+        <a class="bg-red-300" href="?page={{current_page.number}}">{{current_page.number}}</a>
+        
+        {% else %}
+
+        <a class="" href="?page={{current_page.number}}">{{current_page.number}}</a>
+
+        {% endif %}
+        {% endfor %}
+        {% if feedback_list.has_next %}
+        <a href="?page={{ feedback_list.next_page_number }}">Next</a>
+        {% endif %}
+        <a href="?page={{feedback_list.paginator.num_pages}}">Last</a>
+    <!-- {% if feedback_list.has_previous %}
     <a href="?page=1">&laquo First</a>
     <a href="?page={{ feedback_list.previous_page_number }}">Previous</a>
     {% endif %}
@@ -53,7 +85,8 @@
     {% if feedback_list.has_next %}
         <a href="?page={{ feedback_list.next_page_number }}">Next</a>
         <a href="?page={{ feedback_list.paginator.num_pages }}">Last &raquo</a>
-    {% endif %}
+    {% endif %} -->
+
     </div>
 </div>
 
