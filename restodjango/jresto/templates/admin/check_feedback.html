@@ -13,7 +13,7 @@
       </div>
       <script type="text/javascript" src="{% static 'js/alertmessage.js' %}"></script>
       {% endif %}
-    <div class="flex justify-center border-2 border-black w-1/2">
+    <div class="flex justify-center w-1/2 ">
         <table class="table w-full">
             <thead class="text-left">
             <tr>
@@ -27,21 +27,33 @@
             </tr>
             </thead>
             <tbody>
-            {% for feedback in feedbacks %}
+            {% for feedback in feedback_list %}
                 <tr class="border-t-2 border-b-2 border-black">
-                    <td>{{feedback.id}}</td>
+                    <td>{{feedback.id}}.</td>
                     <td>{{feedback.name}}</td>
                     <td>{{feedback.email}}</td>
                     <td>{{feedback.contact_number}}</td>
                     <td>{{feedback.message}}</td>
                     <td>{{feedback.date_created}}</td>
                     <td><a href="{% url 'menu_product_edit' feedback.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                    <td><a href="{% url 'menu_product_delete' feedback.id %}"><i class="fa-solid fa-trash"></i></a></td>
+                    <td><a href="{% url 'admin_feedback_delete' feedback.id %}"><i class="fa-solid fa-trash"></i></a></td>
                 </tr>
             {% endfor %}
             </tbody>
-            
         </table>
+                 
+    </div>
+    <div>
+    {% if feedback_list.has_previous %}
+    <a href="?page=1">&laquo First</a>
+    <a href="?page={{ feedback_list.previous_page_number }}">Previous</a>
+    {% endif %}
+    Page {{ feedback_list.number }} of {{ feedback_list.paginator.num_pages }}
+
+    {% if feedback_list.has_next %}
+        <a href="?page={{ feedback_list.next_page_number }}">Next</a>
+        <a href="?page={{ feedback_list.paginator.num_pages }}">Last &raquo</a>
+    {% endif %}
     </div>
 </div>
 

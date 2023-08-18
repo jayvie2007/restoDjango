@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from django.core.paginator import Paginator
+
 from jresto.models import CustomUser, CustomerFeedback, Product
 from jresto.utils import *
 
@@ -337,7 +339,24 @@ def admin_delete_menu(request, product_id):
     return HttpResponseRedirect(reverse('menu_product'))
 
 def admin_feedback(request):
+    page_row = 2
+    
     feedbacks = CustomerFeedback.objects.all()
+
+    pagination = Paginator(CustomerFeedback.objects.all(),page_row)
+    page = request.GET.get('page')
+    feedback_list = pagination.get_page(page)
+
     return render(request, 'admin/check_feedback.html',{
         'feedbacks':feedbacks,
+        'feedback_list':feedback_list,
     })
+
+def admin_feedback_delete(request, id):
+    try:
+        feedbacks = CustomerFeedback.objects.get(id=id)
+        feedbacks.delete()
+        messages = ("Successfully Delete")
+    except Product.DoesNotExist:
+        messages("Product not found")
+    return HttpResponseRedirect(reverse('admin_feedback'))
