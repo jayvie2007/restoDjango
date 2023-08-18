@@ -70,6 +70,11 @@ def register_customer(request):
         customer_confirm_password = request.POST['customer_confirm_password']
         uid = generate_uid()
 
+        if customer_gender == "Select Gender":
+            return render(request, 'customer/authentication/register.html', {
+                    'register_error': True,
+                    'message': "Please select a gender",
+                })
         if customer_password == customer_confirm_password:
             if CustomUser.objects.filter(username = customer_username):
                 print("user exist")
@@ -188,6 +193,12 @@ def admin_add_menu(request):
         product_description = request.POST['product_description']
         product_image = request.POST['product_image']
         product_uid = generate_uid()
+
+        if product_type == "Select Product Type":
+            return render(request, 'admin/add_product.html', {
+                    'message':"Please select a product type",
+                    'success':False,
+                })
 
         if product_type == "Meal":
             if product_name and Product.objects.filter(name=product_name, product_type=product_type).count() != 0:
