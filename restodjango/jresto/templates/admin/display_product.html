@@ -18,7 +18,7 @@
         <form method="POST" action="{% url 'menu_product' %}">
             {% csrf_token %}
             <div class="w-full b"> 
-                <label for="product_type" class="block test-base mb-2">Product Type:</label>
+                <label for="no_of_display" class="block test-base mb-2">No. of display:</label>
                 <select id="no_of_display" name="no_of_display" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                     <option selected>5</option>
                     <option>10</option>
@@ -26,7 +26,7 @@
                 </select>
             </div>
             <div class="">
-                <label for="product_type" class="block test-base mb-2">Product Type:</label>
+                <label for="product_filter" class="block test-base mb-2">Product type:</label>
                 <select id="product_filter" name="product_filter" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                     <option selected>All</option>
                     <option>Meal</option>
@@ -35,7 +35,7 @@
                 </select>
             </div>
             <div class="">
-                <label for="product_type" class="block test-base mb-2">Product Type:</label>
+                <label for="product_sort" class="block test-base mb-2">Sort by:</label>
                 <select id="product_sort" name="product_sort" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
                     <option selected>Date Created</option>
                     <option>Date Updated</option>

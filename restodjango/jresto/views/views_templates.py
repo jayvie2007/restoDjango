@@ -326,7 +326,6 @@ def admin_display_menu(request):
         sort = "-id"
 
     pagination = Paginator(products.order_by(sort),page_row)
-    print(page_row)
     page = request.GET.get('page')
 
     if page == None:
