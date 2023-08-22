@@ -286,12 +286,62 @@ def admin_add_menu(request):
 def admin_display_menu(request):
     if not request.user.user_level == "Admin":
         return redirect('index')
-    foods = Product.objects.filter(product_type="Meal")
-    drinks = Product.objects.filter(product_type="Drink")
-    sides = Product.objects.filter(product_type="Side")
+    
+    if request.method == 'POST':
+        no_of_display = request.POST['no_of_display']
+        product_filter = request.POST['product_filter']
+        product_sort = request.POST['product_sort']
+        products = Product.objects.all()
 
-    context = {'foods': foods, 'drinks':drinks, 'sides':sides,}
-    return render(request, 'admin/display_product.html', context)
+        #Check no of display for pagination
+        if int(no_of_display) == 10:
+            page_row = 10
+        elif int(no_of_display) == 15:
+            page_row = 15
+        else: page_row = 5
+            
+        #Check product to be filtered
+        if product_filter == "Meal":
+            products = Product.objects.filter(product_type="Meal")
+        elif product_filter == "Drink":
+            products = Product.objects.filter(product_type="Drink")
+        elif product_filter == "Side":
+            products = Product.objects.filter(product_type="Side")
+        else: products = Product.objects.all()
+
+        #Check product sort to be sorted
+        if product_sort == "Date Created":
+            sort = "-date_created"
+        elif product_sort == "Date Updated":
+            sort ="-date_updated"
+        elif product_sort == "Product Type":
+            sort = "product_type"
+        elif product_sort == "Name":  
+            sort = "name"
+        else: sort = "-id"
+
+    else:
+        page_row = 5
+        products = Product.objects.all()
+        sort = "-id"
+
+    pagination = Paginator(products.order_by(sort),page_row)
+    print(page_row)
+    page = request.GET.get('page')
+
+    if page == None:
+        product_list = pagination.get_page(page)
+        page = 1
+        return render(request, 'admin/display_product.html', {
+        'product_list':product_list,
+        'page_number':page
+    })
+    else: 
+        product_list = pagination.get_page(page)
+        return render(request, 'admin/display_product.html',{
+        'product_list':product_list,
+        'page_number':int(page),
+        })
 
 def admin_edit_menu(request, product_id):
     try:
@@ -340,29 +390,21 @@ def admin_delete_menu(request, product_id):
 
 def admin_feedback(request):
     page_row = 1
-    
-    feedbacks = CustomerFeedback.objects.all()
-
     pagination = Paginator(CustomerFeedback.objects.all().order_by('id'),page_row)
     page = request.GET.get('page')
     if page == None:
         feedback_list = pagination.get_page(page)
-        print(page)
         page = 1
         return render(request, 'admin/check_feedback.html',{
-            'feedbacks':feedbacks,
             'feedback_list':feedback_list,
             'page_number':page,
     })
     else:
         feedback_list = pagination.get_page(page)
         return render(request, 'admin/check_feedback.html',{
-            'feedbacks':feedbacks,
             'feedback_list':feedback_list,
             'page_number':int(page),
             })
-
-    
 
 def admin_feedback_delete(request, id):
     try:

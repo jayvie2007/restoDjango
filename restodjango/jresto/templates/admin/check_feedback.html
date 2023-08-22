@@ -53,27 +53,14 @@
             {% if current_page.number == page_number %}
             <a class="bg-red-300" href="?page={{current_page.number}}">{{current_page.number}}</a>
             {% else %}
-
             <a href="?page={{current_page.number}}">{{current_page.number}}</a>
             {% endif %}
         {% endfor %}
 
-        
         {% if feedback_list.has_next %}
             <a href="?page={{feedback_list.next_page_number}}">Next</a>
         {% endif %}
             <a href="?page={{feedback_list.paginator.num_pages}}">Last</a>
-    <!-- {% if feedback_list.has_previous %}
-    <a href="?page=1">&laquo First</a>
-    <a href="?page={{ feedback_list.previous_page_number }}">Previous</a>
-    {% endif %}
-    Page {{ feedback_list.number }} of {{ feedback_list.paginator.num_pages }}
-
-    {% if feedback_list.has_next %}
-        <a href="?page={{ feedback_list.next_page_number }}">Next</a>
-        <a href="?page={{ feedback_list.paginator.num_pages }}">Last &raquo</a>
-    {% endif %} -->
-
     </div>
 </div>
 

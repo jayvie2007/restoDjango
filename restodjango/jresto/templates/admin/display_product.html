@@ -13,7 +13,43 @@
       </div>
       <script type="text/javascript" src="{% static 'js/alertmessage.js' %}"></script>
       {% endif %}
-    <div class="flex justify-center border-2 border-black w-1/2">
+
+    <div class="flex flex-col w-full">
+        <form method="POST" action="{% url 'menu_product' %}">
+            {% csrf_token %}
+            <div class="w-full b"> 
+                <label for="product_type" class="block test-base mb-2">Product Type:</label>
+                <select id="no_of_display" name="no_of_display" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                    <option selected>5</option>
+                    <option>10</option>
+                    <option>15</option>
+                </select>
+            </div>
+            <div class="">
+                <label for="product_type" class="block test-base mb-2">Product Type:</label>
+                <select id="product_filter" name="product_filter" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                    <option selected>All</option>
+                    <option>Meal</option>
+                    <option>Drink</option>
+                    <option>Side</option>
+                </select>
+            </div>
+            <div class="">
+                <label for="product_type" class="block test-base mb-2">Product Type:</label>
+                <select id="product_sort" name="product_sort" class="border w-full text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                    <option selected>Date Created</option>
+                    <option>Date Updated</option>
+                    <option>Name</option>
+                    <option>Product Type</option>
+                </select>
+            </div>
+            <div class="mt-5">
+                <button type="submit" class="border-2 bg-indigo-700 border-indigo-700 text-white py-1 w-1/6 hover:bg-red-700 hover:border-red-700 rounded-md">Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="flex justify-center border-2  border-black w-full">
         <table class="table w-full ">
             <thead class="text-left">
             <tr>
@@ -27,45 +63,38 @@
             </tr>
             </thead>
             <tbody>
-            {% for food in foods %}
+            {% for product in product_list %}
                 <tr class="border-t-2 border-b-2 border-black">
-                    <td>{{food.product_id}}</td>
-                    <td>{{food.name}}</td>
-                    <td>{{food.price}}</td>
-                    <td>{{food.product_type}}</td>
-                    <td>{{food.date_created}}</td>
-                    <td>{{food.date_updated}}</td>
-                    <td><a href="{% url 'menu_product_edit' food.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                    <td><a href="{% url 'menu_product_delete' food.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
+                    <td>{{product.product_id}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price}}</td>
+                    <td>{{product.product_type}}</td>
+                    <td>{{product.date_created}}</td>
+                    <td>{{product.date_updated}}</td>
+                    <td><a href="{% url 'menu_product_edit' product.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td><a href="{% url 'menu_product_delete' product.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
                 </tr>
             {% endfor %}
-            {% for drink in drinks %}
-                <tr class="border-t-2 border-b-2 border-black">
-                    <td>{{drink.product_id}}</td>
-                    <td>{{drink.name}}</td>
-                    <td>{{drink.price}}</td>
-                    <td>{{drink.product_type}}</td>
-                    <td>{{drink.date_created}}</td>
-                    <td>{{drink.date_updated}}</td>
-                    <td><a href="{% url 'menu_product_edit' drink.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                    <td><a href="{% url 'menu_product_delete' drink.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
-                </tr>
-            {% endfor %}
-            {% for side in sides %}
-                <tr class="border-t-2 border-black">
-                    <td>{{side.product_id}}</td>
-                    <td>{{side.name}}</td>
-                    <td>{{side.price}}</td>
-                    <td>{{side.product_type}}</td>
-                    <td>{{side.date_created}}</td>
-                    <td>{{side.date_updated}}</td>
-                    <td><a href="{% url 'menu_product_edit' side.product_id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                    <td><a href="{% url 'menu_product_delete' side.product_id %}"><i class="fa-solid fa-trash"></i></a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            
         </table>
+    </div>
+    <div>
+        <a href="?page=1">First</a>
+        {% if product_list.has_previous %}
+        <a href="?page={{product_list.previous_page_number}}">Previous</a>
+        {% endif %}
+
+        {% for current_page in product_list.paginator %}
+            {% if current_page.number == page_number %}
+            <a class="bg-red-300" href="?page={{current_page.number}}">{{current_page.number}}</a>
+            {% else %}
+            <a href="?page={{current_page.number}}">{{current_page.number}}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if product_list.has_next %}
+            <a href="?page={{product_list.next_page_number}}">Next</a>
+        {% endif %}
+            <a href="?page={{product_list.paginator.num_pages}}">Last</a>
     </div>
 </div>
 {% endblock %}
