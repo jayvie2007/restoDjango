@@ -193,7 +193,7 @@ def admin_add_menu(request):
         product_price = request.POST['product_price']
         product_type = request.POST['product_type']
         product_description = request.POST['product_description']
-        product_image = request.POST['product_image']
+        product_image = request.FILES['product_image']
         product_uid = generate_uid()
 
         if product_type == "Select Product Type":
@@ -216,7 +216,7 @@ def admin_add_menu(request):
                     name = product_name,
                     price = product_price,
                     description = product_description,
-                    #picture = product_image,
+                    picture = product_image,
                     date_created = date.today(),
                 )
                 new_products.save()
@@ -241,7 +241,7 @@ def admin_add_menu(request):
                     name = product_name,
                     price = product_price,
                     description = product_description,
-                    #picture = product_image,
+                    picture = product_image,
                     date_created = date.today(),
                 )
                 new_products.save()
@@ -266,7 +266,7 @@ def admin_add_menu(request):
                     name = product_name,
                     price = product_price,
                     description = product_description,
-                    #picture = product_image,
+                    picture = product_image,
                     date_created = date.today(),
                 )
                 new_products.save()
