@@ -231,7 +231,6 @@ def admin_add_menu(request):
                     date_created=date.today(),
                 )
                 new_product.save()
-                print("Meal success")
                 message=(f"{product_name} has been added in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'success':True,
@@ -245,18 +244,24 @@ def admin_add_menu(request):
                     'message':message,
                     'success':False,
                 })
-            else:  
+            else:
+                if product_image:
+                    # Check if the image already exists in MEDIA_ROOT
+                    image_path = os.path.join(settings.MEDIA_ROOT, product_image.name)
+                    if not default_storage.exists(image_path):
+                        # If the image doesn't exist, save it
+                        default_storage.save(image_path, ContentFile(product_image.read()))
+                        
                 new_products = Product(
                     product_id = f"drink__{product_uid}",
                     product_type=product_type,
                     name = product_name,
                     price = product_price,
                     description = product_description,
-                    picture = product_image,
+                    picture=product_image.name if product_image else None,
                     date_created = date.today(),
                 )
                 new_products.save()
-                print("Drink")
                 message=(f"{product_name} has been added in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'message':message,
@@ -271,17 +276,23 @@ def admin_add_menu(request):
                     'success':False,
                 })
             else:
+                if product_image:
+                    # Check if the image already exists in MEDIA_ROOT
+                    image_path = os.path.join(settings.MEDIA_ROOT, product_image.name)
+                    if not default_storage.exists(image_path):
+                        # If the image doesn't exist, save it
+                        default_storage.save(image_path, ContentFile(product_image.read()))
+
                 new_products = Product(
                     product_id = f"side__{product_uid}",
                     product_type=product_type,
                     name = product_name,
                     price = product_price,
                     description = product_description,
-                    picture = product_image,
+                    picture=product_image.name if product_image else None,
                     date_created = date.today(),
                 )
                 new_products.save()
-                print("Side")
                 message=(f"{product_name} has been added in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'message':message,
