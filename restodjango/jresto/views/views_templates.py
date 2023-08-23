@@ -4,8 +4,10 @@ from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
+from django.conf import settings
 
 from jresto.models import CustomUser, CustomerFeedback, Product
 from jresto.utils import *
@@ -13,6 +15,7 @@ from jresto.utils import *
 from constants.status_code import *
 
 from datetime import date
+import os
 
 def index(request):
     return render(request, 'customer/index.html')
@@ -210,16 +213,24 @@ def admin_add_menu(request):
                     'success':False,
                 })
             else:
-                new_products = Product(
-                    product_id = f"food__{product_uid}",
-                    product_type = product_type,
-                    name = product_name,
-                    price = product_price,
-                    description = product_description,
-                    picture = product_image,
-                    date_created = date.today(),
+            # Handle image upload and linking
+                if product_image:
+                    # Check if the image already exists in MEDIA_ROOT
+                    image_path = os.path.join(settings.MEDIA_ROOT, product_image.name)
+                    if not default_storage.exists(image_path):
+                        # If the image doesn't exist, save it
+                        default_storage.save(image_path, ContentFile(product_image.read()))
+
+                new_product = Product(
+                    product_id=f"food__{product_uid}",
+                    product_type=product_type,
+                    name=product_name,
+                    price=product_price,
+                    description=product_description,
+                    picture=product_image.name if product_image else None,
+                    date_created=date.today(),
                 )
-                new_products.save()
+                new_product.save()
                 print("Meal success")
                 message=(f"{product_name} has been added in type {product_type}")
                 return render(request, 'admin/add_product.html', {
