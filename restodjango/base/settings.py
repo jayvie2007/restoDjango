@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'jresto.middleware.SessionTimeoutMiddleware',
+
 ]
 
 ROOT_URLCONF = 'base.urls'
@@ -158,3 +160,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Modify admin authentication
 AUTH_USER_MODEL = 'jresto.CustomUser'
 LOGIN_URL = 'user_login'
+
+SESSION_COOKIE_AGE = 86400 # 1 day
