@@ -37,7 +37,7 @@ class CustomerFeedback(models.Model):
     email = models.EmailField()
     contact_number = models.CharField(max_length=12, validators=[contact_number_validator])
     message = models.CharField(max_length=500)
-    date_created = models.DateField(default=date.today)
+    date_created = models.DateField(auto_now=True)
 
     def __str__(self):
         return f"{self.id}. {self.name}"
@@ -49,8 +49,8 @@ class Product(models.Model):
     picture = models.ImageField(blank=True, null=True)
     price = models.IntegerField(default=0)
     description = models.CharField(max_length=100, default="")
-    date_created = models.DateField(default=date.today)
-    date_updated = models.DateField(default=date.today)
+    date_created = models.DateField(auto_now_add=True)
+    date_updated = models.DateField(auto_now=True)
 
     def __str__(self):
         return f"{self.product_type}: {self.name}" 
@@ -82,9 +82,9 @@ class CustomUser (AbstractUser):
     groups = models.ManyToManyField(Group, blank=True, related_name='CustomerDetails')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='CustomerDetails')
     save_password = models.CharField(max_length=20, default="", blank=True)
-    date_created = models.DateField(default=date.today)
     user_level = models.CharField(max_length=20, choices=permission_choices)
-    date_updated = models.DateField(default=date.today)
+    date_created = models.DateField(auto_now_add=True)
+    date_updated = models.DateField(auto_now=True)
 
     def __str__(self):
         return f"{self.user_level}: {self.first_name} {self.last_name}"
