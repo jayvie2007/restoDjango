@@ -53,7 +53,6 @@ def contact(request):
             email = email,
             contact_number = contact_number,
             message = message,
-            date_created = date.today(),
         )
 
         return render(request, 'customer/contact.html', {
@@ -140,7 +139,6 @@ def edit_customer(request, uid):
             users.last_name = user_last_name
             users.password = make_password(user_pass)
             users.save_password = user_pass
-            users.date_updated = date.today()
             users.save()
             login(request, users)
             
@@ -191,12 +189,16 @@ def admin_menu(request):
 def admin_add_menu(request):
     if not request.user.user_level == "Admin":
         return redirect('index')
-    if request.method =="POST":
+    if request.method =="POST":        
+        try:
+            product_image = request.FILES['product_image']
+        except:
+            product_image = None
+
         product_name = request.POST['product_name']
         product_price = request.POST['product_price']
         product_type = request.POST['product_type']
         product_description = request.POST['product_description']
-        product_image = request.FILES['product_image']
         product_uid = generate_uid()
 
         if product_type == "Select Product Type":
@@ -207,7 +209,7 @@ def admin_add_menu(request):
 
         if product_type == "Meal":
             if product_name and Product.objects.filter(name=product_name, product_type=product_type).count() != 0:
-                message=(f"{product_name} is currently existing in type {product_type}")
+                message = (f"{product_name} is currently existing in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'message':message,
                     'success':False,
@@ -222,16 +224,15 @@ def admin_add_menu(request):
                         default_storage.save(image_path, ContentFile(product_image.read()))
 
                 new_product = Product(
-                    product_id=f"food__{product_uid}",
-                    product_type=product_type,
-                    name=product_name,
-                    price=product_price,
-                    description=product_description,
-                    picture=product_image.name if product_image else None,
-                    date_created=date.today(),
+                    product_id = f"food__{product_uid}",
+                    product_type = product_type,
+                    name = product_name,
+                    price = product_price,
+                    description = product_description,
+                    picture = product_image.name if product_image else None,
                 )
                 new_product.save()
-                message=(f"{product_name} has been added in type {product_type}")
+                message = (f"{product_name} has been added in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'success':True,
                     'message':message,
@@ -239,7 +240,7 @@ def admin_add_menu(request):
         
         elif product_type == "Drink":
             if product_name and Product.objects.filter(name=product_name, product_type=product_type).count() != 0:
-                message=(f"{product_name} is currently existing in type {product_type}")
+                message = (f"{product_name} is currently existing in type {product_type}")
                 return render(request, 'admin/add_product.html', {
                     'message':message,
                     'success':False,
@@ -254,12 +255,11 @@ def admin_add_menu(request):
                         
                 new_products = Product(
                     product_id = f"drink__{product_uid}",
-                    product_type=product_type,
+                    product_type = product_type,
                     name = product_name,
                     price = product_price,
                     description = product_description,
-                    picture=product_image.name if product_image else None,
-                    date_created = date.today(),
+                    picture = product_image.name if product_image else None,
                 )
                 new_products.save()
                 message=(f"{product_name} has been added in type {product_type}")
@@ -285,12 +285,11 @@ def admin_add_menu(request):
 
                 new_products = Product(
                     product_id = f"side__{product_uid}",
-                    product_type=product_type,
+                    product_type = product_type,
                     name = product_name,
                     price = product_price,
                     description = product_description,
-                    picture=product_image.name if product_image else None,
-                    date_created = date.today(),
+                    picture = product_image.name if product_image else None,
                 )
                 new_products.save()
                 message=(f"{product_name} has been added in type {product_type}")
@@ -365,54 +364,54 @@ def admin_display_menu(request):
         })
 
 def admin_edit_menu(request, product_id):
-    try:
-        if request.method == 'POST':
-            errors = {}
-            products = Product.objects.get(product_id=product_id)
-            product_name = request.POST['product_name']
-            product_price = request.POST['product_price']
-            product_type = request.POST['product_type']
-            product_description = request.POST['product_description']
-            product_image = request.POST['product_image']
-        
-            products.name = product_name
-            products.price = product_price
-            products.product_type = product_type
-            products.description = product_description
-            products.date_updated = date.today()
-            #products.image = product_image
-            products.save()
-
-            return render(request, 'admin/edit_product.html', {
-                'products':products,
-                'success':True,
-                'message':"Successfully Edited!"
-            })
-    except Product.DoesNotExist:
-        messages = ("Product not found")
-        return render(request, 'admin/edit_product.html', {
-        'products':products,
-        'messages':messages,
-    })
-        
     products = Product.objects.get(product_id=product_id)
+    if request.method == 'POST':
+        try:
+            product_image = request.FILES['product_image']
+        except:
+            product_image = None
+
+        errors = {}
+
+        product_name = request.POST['product_name']
+        product_price = request.POST['product_price']
+        product_type = request.POST['product_type']
+        product_description = request.POST['product_description']
+        
+        if product_image:
+            # Check if the image already exists in MEDIA_ROOT
+            image_path = os.path.join(settings.MEDIA_ROOT, product_image.name)
+            if not default_storage.exists(image_path):
+                # If the image doesn't exist, save it
+                default_storage.save(image_path, ContentFile(product_image.read()))
+
+        products.name = product_name
+        products.price = product_price
+        products.product_type = product_type
+        products.description = product_description
+        products.picture = product_image.name if product_image else None
+        products.save()
+
+        return render(request, 'admin/edit_product.html', {
+            'products':products,
+            'success':True,
+            'message':"Successfully Edited!"
+        })
+
     return render(request, 'admin/edit_product.html', {
         'products':products,
     })
 
 def admin_delete_menu(request, product_id):
-    try:
-        product = Product.objects.get(product_id=product_id)
-        product.delete()
-        messages = ("Successfully Delete")
-    except Product.DoesNotExist:
-        messages("Product not found")
+    product = Product.objects.get(product_id=product_id)
+    product.delete()
     return HttpResponseRedirect(reverse('menu_product'))
 
 def admin_feedback(request):
     page_row = 1
     pagination = Paginator(CustomerFeedback.objects.all().order_by('id'),page_row)
     page = request.GET.get('page')
+
     if page == None:
         feedback_list = pagination.get_page(page)
         page = 1
@@ -428,10 +427,7 @@ def admin_feedback(request):
             })
 
 def admin_feedback_delete(request, id):
-    try:
-        feedbacks = CustomerFeedback.objects.get(id=id)
-        feedbacks.delete()
-        messages = ("Successfully Delete")
-    except Product.DoesNotExist:
-        messages("Product not found")
+    feedbacks = CustomerFeedback.objects.get(id=id)
+    feedbacks.delete()
+    messages = ("Successfully Delete")
     return HttpResponseRedirect(reverse('admin_feedback'))

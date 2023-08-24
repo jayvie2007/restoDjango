@@ -54,10 +54,6 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.product_type}: {self.name}" 
-    
-    def save(self, *args, **kwargs):
-        self.date_updated = date.today()
-        super().save(*args, **kwargs)
 
     @property
     def imageURL(self):
