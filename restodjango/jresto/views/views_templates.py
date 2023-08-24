@@ -383,25 +383,22 @@ def admin_edit_menu(request, product_id):
         product_type = request.POST['product_type']
         product_description = request.POST['product_description']
         
+        if products.picture:
+            image_path = products.picture.path
+            if default_storage.exists(image_path):
+                default_storage.delete(image_path)
         if product_image:
-            # Delete the old image if it exists
-            if products.picture:
-                old_image_path = os.path.join(settings.MEDIA_ROOT, products.picture)
-                if default_storage.exists(old_image_path):
-                    default_storage.delete(old_image_path)
-
-            # Save the new image
+            # Check if the image already exists in MEDIA_ROOT
             image_path = os.path.join(settings.MEDIA_ROOT, product_image.name)
-            default_storage.save(image_path, ContentFile(product_image.read()))
-        else:
-            # If no new image is provided, retain the old image path
-            product_image = products.picture
+            if not default_storage.exists(image_path):
+                # If the image doesn't exist, save it
+                default_storage.save(image_path, ContentFile(product_image.read()))
 
         products.name = product_name
         products.price = product_price
         products.product_type = product_type
         products.description = product_description
-        products.picture = product_image
+        products.picture = product_image.name if product_image else None
         products.save()
 
         return render(request, 'admin/edit_product.html', {
