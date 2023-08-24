@@ -4,7 +4,7 @@ services:
     container_name: resto_django
     build:
       context: ./restodjango/
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 "
     #command: gunicorn base.wsgi:application --bind 0.0.0.0:8000 --reload
     volumes:
       - ./restodjango/:/usr/src/app
