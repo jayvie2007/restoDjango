@@ -81,15 +81,15 @@ def register_customer(request):
                     'register_error': True,
                     'message': "Please select a gender",
                 })
+        
         if customer_password == customer_confirm_password:
             if CustomUser.objects.filter(username = customer_username):
-                print("user exist")
                 return render(request, 'customer/authentication/register.html', {
                     'register_error': True,
                     'message': username_exist,
                 })
+            
             if CustomUser.objects.filter(email = customer_email):
-                print("email exist")
                 return render(request, 'customer/authentication/register.html', {
                     'register_error': True,
                     'message': email_exist,
@@ -108,10 +108,8 @@ def register_customer(request):
                     password = make_password(customer_password),
                     save_password = customer_password,
                 )
-                print("Successfully created a new customer")
                 return redirect('user_login')
         else:
-            print("wrong pass")
             return render(request, 'customer/authentication/register.html', {
                 'register_error':True,
                 'message': password_not_match
@@ -165,32 +163,31 @@ def login_customer(request):
     if request.method == 'POST':
         customer_user = request.POST['customer_user']
         customer_pass = request.POST['customer_pass']
-
         users = authenticate(request, username=customer_user, password=customer_pass)
+
         if users is not None:
             login(request, users)
-            print("customer login!")
             return redirect('index')
         else:
-            print("customer failed")
             return render(request, 'customer/authentication/login.html', {
                 'success':False,
             })
     return render(request, 'customer/authentication/login.html')
 
 def logout_customer(request):
-    print("logout")
     logout(request)
     return redirect('index')
 
 def admin_menu(request):
     if not request.user.user_level == "Admin":
         return redirect('index')
+    
     return render(request, 'admin/menu.html')
 
 def admin_add_menu(request):
     if not request.user.user_level == "Admin":
         return redirect('index')
+    
     if request.method =="POST":        
         try:
             product_image = request.FILES['product_image']
@@ -376,8 +373,6 @@ def admin_edit_menu(request, product_id):
         except:
             product_image = None
 
-        errors = {}
-
         product_name = request.POST['product_name']
         product_price = request.POST['product_price']
         product_type = request.POST['product_type']
@@ -424,6 +419,7 @@ def admin_delete_menu(request, product_id):
             default_storage.delete(image_path)
     products.delete()
     return HttpResponseRedirect(reverse('menu_product'))
+
 def admin_feedback(request):
     page_row = 1
     pagination = Paginator(CustomerFeedback.objects.all().order_by('id'),page_row)
