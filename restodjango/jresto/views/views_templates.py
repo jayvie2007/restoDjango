@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 from jresto.models import CustomUser, CustomerFeedback, Product
@@ -364,7 +366,10 @@ def admin_display_menu(request):
         })
 
 def admin_edit_menu(request, product_id):
-    products = Product.objects.get(product_id=product_id)
+    try:
+        products = Product.objects.get(product_id=product_id)
+    except ObjectDoesNotExist:
+        raise Http404("Product does not exist")
     if request.method == 'POST':
         try:
             product_image = request.FILES['product_image']
@@ -379,17 +384,24 @@ def admin_edit_menu(request, product_id):
         product_description = request.POST['product_description']
         
         if product_image:
-            # Check if the image already exists in MEDIA_ROOT
+            # Delete the old image if it exists
+            if products.picture:
+                old_image_path = os.path.join(settings.MEDIA_ROOT, products.picture)
+                if default_storage.exists(old_image_path):
+                    default_storage.delete(old_image_path)
+
+            # Save the new image
             image_path = os.path.join(settings.MEDIA_ROOT, product_image.name)
-            if not default_storage.exists(image_path):
-                # If the image doesn't exist, save it
-                default_storage.save(image_path, ContentFile(product_image.read()))
+            default_storage.save(image_path, ContentFile(product_image.read()))
+        else:
+            # If no new image is provided, retain the old image path
+            product_image = products.picture
 
         products.name = product_name
         products.price = product_price
         products.product_type = product_type
         products.description = product_description
-        products.picture = product_image.name if product_image else None
+        products.picture = product_image
         products.save()
 
         return render(request, 'admin/edit_product.html', {
@@ -403,10 +415,18 @@ def admin_edit_menu(request, product_id):
     })
 
 def admin_delete_menu(request, product_id):
-    product = Product.objects.get(product_id=product_id)
-    product.delete()
-    return HttpResponseRedirect(reverse('menu_product'))
+    try:
+        products = Product.objects.get(product_id=product_id)
+    except Product.DoesNotExist:
+        return HttpResponseRedirect(reverse('menu_product'))
 
+    # Delete the associated image if it exists
+    if products.picture:
+        image_path = products.picture.path
+        if default_storage.exists(image_path):
+            default_storage.delete(image_path)
+    products.delete()
+    return HttpResponseRedirect(reverse('menu_product'))
 def admin_feedback(request):
     page_row = 1
     pagination = Paginator(CustomerFeedback.objects.all().order_by('id'),page_row)
