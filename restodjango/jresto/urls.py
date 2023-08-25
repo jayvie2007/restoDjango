@@ -49,3 +49,9 @@ urlpatterns += [
     path('jresto/admin/feedback', views_templates.admin_feedback, name="admin_feedback"),
 ]
 
+###### ORDER TRANSANCTION ######
+urlpatterns += [
+    path('jresto/cart/', views_templates.check_cart, name="check_cart"),
+    path('jresto/checkout/', views_templates.checkout, name="check_order"),
+]
+

@@ -444,3 +444,13 @@ def admin_feedback_delete(request, id):
     feedbacks.delete()
     messages = ("Successfully Delete")
     return HttpResponseRedirect(reverse('admin_feedback'))
+
+def add_cart (request):
+    return render(request, 'order/cart.html')
+def check_cart (request):
+    return render(request, 'order/cart.html')
+def update_cart (request):
+    return render(request, 'order/cart.html')
+
+def checkout (request):
+    return render(request, 'order/checkout.html')
