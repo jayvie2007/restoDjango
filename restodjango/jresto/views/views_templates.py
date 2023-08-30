@@ -32,11 +32,9 @@ def food(request):
                 'products':products,
             })
     
-    print("not authenticated and not a customer")
     return render(request, 'customer/menu/food.html', {
             'products':products,
         })
-
 
 def drink(request):
     products = Product.objects.filter(product_type="Drink")
@@ -45,6 +43,10 @@ def drink(request):
         return render(request, 'customer/menu/drink.html', {
             'products':products,
         })
+    
+    return render(request, 'customer/menu/side.html', {
+        'products':products,
+    })
 
 def side(request):
     products = Product.objects.filter(product_type="Side")
@@ -53,6 +55,7 @@ def side(request):
         return render(request, 'customer/menu/food.html', {
             'products':products,
         })
+    
     return render(request, 'customer/menu/side.html', {
         'products':products,
     })
@@ -465,7 +468,16 @@ def admin_feedback_delete(request, id):
 def add_cart (request):
     return render(request, 'order/cart.html')
 def check_cart (request):
-    return render(request, 'order/cart.html')
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+    except:
+        return redirect('user_login') 
+    order = OrderItem.objects.filter(order__customer=customer)
+    # print()
+    return render(request, 'order/cart.html',{
+        'order':order,
+    })
 def update_cart (request):
     return render(request, 'order/cart.html')
 
