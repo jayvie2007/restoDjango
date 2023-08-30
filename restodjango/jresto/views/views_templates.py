@@ -11,12 +11,11 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
-from jresto.models import CustomUser, CustomerFeedback, Product
+from jresto.models import CustomUser, CustomerFeedback, Product, OrderItem, Order
 from jresto.utils import *
 
 from constants.status_code import *
 
-from datetime import date
 import os
 
 def index(request):
@@ -26,21 +25,39 @@ def menu(request):
     return render(request, 'customer/menu.html')
 
 def food(request):
-    foods = Product.objects.filter(product_type="Meal")
+    products = Product.objects.filter(product_type="Meal")
+    if request.user.is_authenticated == True and request.user.user_level == "Customer":
+        add_order_item(request)
+        return render(request, 'customer/menu/food.html', {
+                'products':products,
+            })
+    
     return render(request, 'customer/menu/food.html', {
-        'foods':foods,
-    })
+            'products':products,
+        })
 
 def drink(request):
-    drinks = Product.objects.filter(product_type="Drink")
-    return render(request, 'customer/menu/drink.html', {
-        'drinks':drinks,
+    products = Product.objects.filter(product_type="Drink")
+    if request.user.is_authenticated == True and request.user.user_level == "Customer":
+        add_order_item(request)
+        return render(request, 'customer/menu/drink.html', {
+            'products':products,
+        })
+    
+    return render(request, 'customer/menu/side.html', {
+        'products':products,
     })
 
 def side(request):
-    sides = Product.objects.filter(product_type="Side")
+    products = Product.objects.filter(product_type="Side")
+    if request.user.is_authenticated == True and request.user.user_level == "Customer":
+        add_order_item(request)
+        return render(request, 'customer/menu/food.html', {
+            'products':products,
+        })
+    
     return render(request, 'customer/menu/side.html', {
-        'sides':sides,
+        'products':products,
     })
 
 def contact(request):
@@ -167,7 +184,10 @@ def login_customer(request):
 
         if users is not None:
             login(request, users)
-            return redirect('index')
+            if request.user.user_level == "Admin":
+                return redirect('admin_menu')
+            else:
+                return redirect('index')
         else:
             return render(request, 'customer/authentication/login.html', {
                 'success':False,
@@ -176,7 +196,7 @@ def login_customer(request):
 
 def logout_customer(request):
     logout(request)
-    return redirect('index')
+    return redirect('user_login')
 
 def admin_menu(request):
     if not request.user.user_level == "Admin":
@@ -448,7 +468,16 @@ def admin_feedback_delete(request, id):
 def add_cart (request):
     return render(request, 'order/cart.html')
 def check_cart (request):
-    return render(request, 'order/cart.html')
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+    except:
+        return redirect('user_login') 
+    order = OrderItem.objects.filter(order__customer=customer)
+    # print()
+    return render(request, 'order/cart.html',{
+        'order':order,
+    })
 def update_cart (request):
     return render(request, 'order/cart.html')
 

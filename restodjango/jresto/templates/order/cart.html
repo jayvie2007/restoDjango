@@ -3,6 +3,42 @@
 {% block title %} Cart {% endblock %}
 {% block body %}
 
+<div class="flex flex-row mt-20 gap-5">
+    <div class="flex justify-center border-2 border-black w-1/2">
+        Image
+    </div>
+    <div class="flex justify-center border-2 border-black w-1/2">
+        Product
+    </div>
+    <div class="flex justify-center border-2 border-black w-1/2">
+        Price
+    </div>
+    <div class="flex justify-center border-2 border-black w-1/2">
+        Quantity
+    </div>
+    <div class="flex justify-center border-2 border-black w-1/2">
+        Total
+    </div>
+</div>
 
+{% for orders in order %}
+<div class="flex flex-row mt-5 gap-5">
+    <div class="flex items-center border-2 border-black w-1/2">
+    <img src="{{orders.product.imageURL}}" alt="">
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+        {{orders.product.name}}
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+        {{orders.product.price}}
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+        {{orders.quantity}}
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+        {{orders.get_total}}
+    </div>
+</div>
+{% endfor %}
 
 {% endblock %}

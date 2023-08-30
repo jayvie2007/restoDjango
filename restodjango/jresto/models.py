@@ -104,3 +104,28 @@ class Customer(models.Model):
 
     def __str__(self):
         return f"Wallet: {self.customer.first_name} {self.customer.last_name}"
+    
+class Order(models.Model):
+    customer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    transaction_id = models.CharField(max_length=100, null=True)
+    complete = models.BooleanField(default=False)
+    date_created = models.DateField(auto_now_add=True)
+    date_completed = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.customer.first_name}"
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
+    quantity = models.IntegerField(default=0,null=True,blank=True)
+    date_created = models.DateField(auto_now_add=True)
+    date_completed = models.DateField(auto_now=True)
+
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+        return total
+    
+    def __str__(self):
+        return f"{self.order.customer}, Product: {self.product.name}, Quantity: {self.quantity}"
