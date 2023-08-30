@@ -11,12 +11,11 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
-from jresto.models import CustomUser, CustomerFeedback, Product
+from jresto.models import CustomUser, CustomerFeedback, Product, OrderItem, Order
 from jresto.utils import *
 
 from constants.status_code import *
 
-from datetime import date
 import os
 
 def index(request):
@@ -27,9 +26,36 @@ def menu(request):
 
 def food(request):
     foods = Product.objects.filter(product_type="Meal")
+    if request.user.is_authenticated == True and request.user.user_level == "Customer":
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        
+        if request.method == "POST":
+            product_id = request.POST['product_id']
+            quantity = 0
+            product_item = Product.objects.get(id=product_id)
+
+            orders, created = Order.objects.get_or_create(customer = customer, complete = False)
+            orderitems, created = OrderItem.objects.get_or_create(order = orders, product = product_item)
+            
+            if orderitems:
+                orderitems.quantity = (orderitems.quantity + 1)
+                print(orderitems)
+            orderitems.save()
+            print(product_item)
+
+        return render(request, 'customer/menu/food.html', {
+            'foods':foods,
+        })
+    
+    print("not authenticated and not a customer")
     return render(request, 'customer/menu/food.html', {
-        'foods':foods,
-    })
+            'foods':foods,
+        })
+
+
+    
+    
 
 def drink(request):
     drinks = Product.objects.filter(product_type="Drink")
@@ -176,7 +202,7 @@ def login_customer(request):
 
 def logout_customer(request):
     logout(request)
-    return redirect('index')
+    return redirect('user_login')
 
 def admin_menu(request):
     if not request.user.user_level == "Admin":

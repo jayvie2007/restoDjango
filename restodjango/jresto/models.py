@@ -118,14 +118,14 @@ class Order(models.Model):
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
-    quantity = models.BooleanField(default=False)
+    quantity = models.IntegerField(default=0,null=True,blank=True)
     date_created = models.DateField(auto_now_add=True)
     date_completed = models.DateField(auto_now=True)
 
     @property
     def get_total(self):
-        total = self.product * self.quantity
+        total = self.product.price * self.quantity
         return total
     
     def __str__(self):
-        return f"OrderItem"
+        return f"OrderItem {self.product} {self.quantity}"
