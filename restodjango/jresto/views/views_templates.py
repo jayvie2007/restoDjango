@@ -181,7 +181,10 @@ def login_customer(request):
 
         if users is not None:
             login(request, users)
-            return redirect('index')
+            if request.user.user_level == "Admin":
+                return redirect('admin_menu')
+            else:
+                return redirect('index')
         else:
             return render(request, 'customer/authentication/login.html', {
                 'success':False,
