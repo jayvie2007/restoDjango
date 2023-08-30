@@ -128,4 +128,4 @@ class OrderItem(models.Model):
         return total
     
     def __str__(self):
-        return f"OrderItem {self.product} {self.quantity}"
+        return f"{self.order.customer}, Product: {self.product.name}, Quantity: {self.quantity}"

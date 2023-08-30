@@ -25,14 +25,14 @@ def menu(request):
     return render(request, 'customer/menu.html')
 
 def food(request):
-    foods = Product.objects.filter(product_type="Meal")
+    products = Product.objects.filter(product_type="Meal")
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         customer_id = request.user.id
         customer = CustomUser.objects.get(id=customer_id)
         
+        #Add orderitems into the customer users
         if request.method == "POST":
             product_id = request.POST['product_id']
-            quantity = 0
             product_item = Product.objects.get(id=product_id)
 
             orders, created = Order.objects.get_or_create(customer = customer, complete = False)
@@ -40,33 +40,65 @@ def food(request):
             
             if orderitems:
                 orderitems.quantity = (orderitems.quantity + 1)
-                print(orderitems)
             orderitems.save()
-            print(product_item)
 
         return render(request, 'customer/menu/food.html', {
-            'foods':foods,
+            'foods':products,
         })
     
     print("not authenticated and not a customer")
     return render(request, 'customer/menu/food.html', {
-            'foods':foods,
+            'foods':products,
         })
 
-
-    
-    
-
 def drink(request):
-    drinks = Product.objects.filter(product_type="Drink")
+    products = Product.objects.filter(product_type="Drink")
+    if request.user.is_authenticated == True and request.user.user_level == "Customer":
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        
+        #Add orderitems into the customer users
+        if request.method == "POST":
+            product_id = request.POST['product_id']
+            product_item = Product.objects.get(id=product_id)
+
+            orders, created = Order.objects.get_or_create(customer = customer, complete = False)
+            orderitems, created = OrderItem.objects.get_or_create(order = orders, product = product_item)
+            
+            if orderitems:
+                orderitems.quantity = (orderitems.quantity + 1)
+            orderitems.save()
+
+        return render(request, 'customer/menu/food.html', {
+            'drinks':products,
+        })
     return render(request, 'customer/menu/drink.html', {
-        'drinks':drinks,
+        'drinks':products,
     })
 
 def side(request):
-    sides = Product.objects.filter(product_type="Side")
+    products = Product.objects.filter(product_type="Side")
+    if request.user.is_authenticated == True and request.user.user_level == "Customer":
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        
+        #Add orderitems into the customer users
+        if request.method == "POST":
+            product_id = request.POST['product_id']
+            product_item = Product.objects.get(id=product_id)
+
+            orders, created = Order.objects.get_or_create(customer = customer, complete = False)
+            orderitems, created = OrderItem.objects.get_or_create(order = orders, product = product_item)
+            
+            if orderitems:
+                orderitems.quantity = (orderitems.quantity + 1)
+            orderitems.save()
+
+        return render(request, 'customer/menu/food.html', {
+            'sides':products,
+        })
     return render(request, 'customer/menu/side.html', {
-        'sides':sides,
+        'sides':products,
     })
 
 def contact(request):
