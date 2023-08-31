@@ -21,24 +21,38 @@
     </div>
 </div>
 
-{% for orders in order %}
+{% for orderitem in orderitems %}
 <div class="flex flex-row mt-5 gap-5">
-    <div class="flex items-center border-2 border-black w-1/2">
-    <img src="{{orders.product.imageURL}}" alt="">
+    <div class="flex justify-center items-center border-2 border-black w-1/2">
+    <img src="{{orderitem.product.imageURL}}" class="w-20" alt="">
     </div>
     <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.product.name}}
+        {{orderitem.product.name}}
     </div>
     <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.product.price}}
+        {{orderitem.product.price}}
     </div>
     <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.quantity}}
+        {{orderitem.quantity}}
     </div>
     <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.get_total}}
+        {{orderitem.get_total}}
+        
     </div>
 </div>
 {% endfor %}
-
+<div class="flex flex-row mt-5 gap-5">
+    <div class="flex items-center border-2 border-black w-1/2">
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+        Total: {{total_cart_items}}
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+        Total: {{total_cart_value}}
+    </div>
+</div>
 {% endblock %}

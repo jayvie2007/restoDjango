@@ -16,14 +16,17 @@ class User(admin.ModelAdmin):
     readonly_fields =('uid','date_created','date_updated')
 
 class DateCompleted(admin.ModelAdmin):
-    readonly_fields = ('date_created', 'date_completed')
+    readonly_fields = ('date_created', 'date_completed'
+                       )
+class OrderAdmin(admin.ModelAdmin):
+    readonly_fields = ('date_created', 'date_completed', 'total_bill')
 
 admin.site.register(Product, Product_Admin)
 
 admin.site.register(CustomUser, User)
 admin.site.register(Customer)
 
-admin.site.register(Order, DateCompleted)
+admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem, DateCompleted)
 
 admin.site.register(CustomerFeedback)
