@@ -487,8 +487,34 @@ def check_cart (request):
         'total_cart_items':total_cart_items,
     })
 
-def update_cart (request):
-    return render(request, 'order/cart.html')
+def update_cart (request, name):
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+    except:
+        return redirect('user_login') 
+    try:
+        orderitems = OrderItem.objects.get(order__customer=customer, order__complete=False, product__name=name)
+    except:
+        return redirect('check_cart')
+
+    if request.method == 'POST':
+        product_quantity = request.POST['product_quantity']
+        print(type(product_quantity))
+        if product_quantity == '0':
+            orderitems.delete()
+            return HttpResponseRedirect(reverse('check_cart'))
+        else:
+            orderitems.quantity = product_quantity
+            orderitems.save()
+            return render(request, 'order/update_cart.html', {
+                'orderitems':orderitems,
+                'success':True,
+                'message':"Changes has been saved",
+            })
+    return render(request, 'order/update_cart.html', {
+        'orderitems':orderitems,
+    })
 
 def checkout (request):
     return render(request, 'order/checkout.html')
