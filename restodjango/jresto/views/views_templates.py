@@ -466,9 +466,6 @@ def admin_feedback_delete(request, id):
     messages = ("Successfully Delete")
     return HttpResponseRedirect(reverse('admin_feedback'))
 
-def add_cart (request):
-    return render(request, 'order/cart.html')
-
 def check_cart (request):
     try:
         customer_id = request.user.id

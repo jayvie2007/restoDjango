@@ -53,6 +53,6 @@ urlpatterns += [
 urlpatterns += [
     path('jresto/cart/', views_templates.check_cart, name="check_cart"),
     path('jresto/cart/update/<str:name>', views_templates.update_cart, name="update_cart"),
-    path('jresto/checkout/', views_templates.checkout, name="check_order"),
+    path('jresto/checkout/', views_templates.checkout, name="checkout"),
 ]
 
