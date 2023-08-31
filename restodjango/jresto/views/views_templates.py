@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -467,19 +468,53 @@ def admin_feedback_delete(request, id):
 
 def add_cart (request):
     return render(request, 'order/cart.html')
+
 def check_cart (request):
     try:
         customer_id = request.user.id
         customer = CustomUser.objects.get(id=customer_id)
     except:
         return redirect('user_login') 
-    order = OrderItem.objects.filter(order__customer=customer)
-    # print()
+    
+    orders = Order.objects.filter(customer=customer, complete=False)
+    orderitems = OrderItem.objects.filter(order__customer=customer, order__complete=False)
+    total_cart_value = sum(order.get_cart_total for order in orders)
+    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+
     return render(request, 'order/cart.html',{
-        'order':order,
+        'orderitems':orderitems,
+        'total_cart_value':total_cart_value,
+        'total_cart_items':total_cart_items,
     })
-def update_cart (request):
-    return render(request, 'order/cart.html')
+
+def update_cart (request, name):
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+    except:
+        return redirect('user_login') 
+    try:
+        orderitems = OrderItem.objects.get(order__customer=customer, order__complete=False, product__name=name)
+    except:
+        return redirect('check_cart')
+
+    if request.method == 'POST':
+        product_quantity = request.POST['product_quantity']
+        print(type(product_quantity))
+        if product_quantity == '0':
+            orderitems.delete()
+            return HttpResponseRedirect(reverse('check_cart'))
+        else:
+            orderitems.quantity = product_quantity
+            orderitems.save()
+            return render(request, 'order/update_cart.html', {
+                'orderitems':orderitems,
+                'success':True,
+                'message':"Changes has been saved",
+            })
+    return render(request, 'order/update_cart.html', {
+        'orderitems':orderitems,
+    })
 
 def checkout (request):
     return render(request, 'order/checkout.html')

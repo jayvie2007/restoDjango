@@ -21,24 +21,43 @@
     </div>
 </div>
 
-{% for orders in order %}
+{% for orderitem in orderitems %}
 <div class="flex flex-row mt-5 gap-5">
-    <div class="flex items-center border-2 border-black w-1/2">
-    <img src="{{orders.product.imageURL}}" alt="">
+    <div class="flex justify-center items-center border-2 border-black w-1/2">
+    <img src="{{orderitem.product.imageURL}}" class="w-20" alt="">
     </div>
-    <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.product.name}}
+    <div class="flex justify-center items-center border-2 border-black w-1/2">
+        {{orderitem.product.name}}
     </div>
-    <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.product.price}}
+    <div class="flex justify-center items-center border-2 border-black w-1/2">
+        {{orderitem.product.price}}
     </div>
-    <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.quantity}}
+    <div class="flex justify-center items-center border-2 border-black w-1/2 gap-8">
+        <div class="">
+        {{orderitem.quantity}}
+        </div>
+        <div class="text-indigo-400 text-lg hover:text-red-700">
+            <a href="{% url 'update_cart' orderitem.product.name %}" class="">edit</a>
+        </div>
     </div>
-    <div class="flex items-center border-2 border-black w-1/2">
-        {{orders.get_total}}
+    <div class="flex justify-center items-center border-2 border-black w-1/2">
+        {{orderitem.get_total}}
+        
     </div>
 </div>
 {% endfor %}
-
+<div class="flex flex-row mt-5 gap-5">
+    <div class="flex items-center border-2 border-black w-1/2">
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+    </div>
+    <div class="flex items-center border-2 border-black w-1/2">
+    </div>
+    <div class="flex justify-center items-center border-2 border-black w-1/2">
+        Total: {{total_cart_items}}
+    </div>
+    <div class="flex justify-center items-center border-2 border-black w-1/2">
+        Total: {{total_cart_value}}
+    </div>
+</div>
 {% endblock %}

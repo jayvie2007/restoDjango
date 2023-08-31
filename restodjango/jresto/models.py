@@ -106,14 +106,21 @@ class Customer(models.Model):
         return f"Wallet: {self.customer.first_name} {self.customer.last_name}"
     
 class Order(models.Model):
+    complete = models.BooleanField(default=False)
     customer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     transaction_id = models.CharField(max_length=100, null=True)
-    complete = models.BooleanField(default=False)
+    total_bill = models.IntegerField(null=True, default=0)
     date_created = models.DateField(auto_now_add=True)
     date_completed = models.DateField(auto_now=True)
 
+    @property
+    def get_cart_total(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderitems])
+        return total
+
     def __str__(self):
-        return f"{self.customer.first_name}"
+        return f"{self.id}. {self.customer.first_name}"
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
@@ -128,4 +135,4 @@ class OrderItem(models.Model):
         return total
     
     def __str__(self):
-        return f"{self.order.customer}, Product: {self.product.name}, Quantity: {self.quantity}"
+        return f"{self.order.id}. {self.order.customer}, Product: {self.product.name}, Quantity: {self.quantity}"
