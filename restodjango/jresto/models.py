@@ -136,3 +136,17 @@ class OrderItem(models.Model):
     
     def __str__(self):
         return f"{self.order.id}. {self.order.customer}, Product: {self.product.name}, Quantity: {self.quantity}"
+
+class DeliveryInfo(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    address = models.CharField(max_length=100)
+    province = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    barangay = models.CharField(max_length=100)
+    zip_code = models.IntegerField()
+    email = models.EmailField()
+    contact_number = models.IntegerField()
+
+    def __str__(self):
+        return f"Delivery: {self.id}. {self.customer.first_name} {self.customer.first_name}"

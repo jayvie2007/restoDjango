@@ -12,7 +12,7 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
-from jresto.models import CustomUser, CustomerFeedback, Product, OrderItem, Order
+from jresto.models import CustomUser, CustomerFeedback, Product, OrderItem, Order, DeliveryInfo
 from jresto.utils import *
 
 from constants.status_code import *
@@ -463,7 +463,6 @@ def admin_feedback(request):
 def admin_feedback_delete(request, id):
     feedbacks = CustomerFeedback.objects.get(id=id)
     feedbacks.delete()
-    messages = ("Successfully Delete")
     return HttpResponseRedirect(reverse('admin_feedback'))
 
 def check_cart (request):
@@ -497,7 +496,6 @@ def update_cart (request, name):
 
     if request.method == 'POST':
         product_quantity = request.POST['product_quantity']
-        print(type(product_quantity))
         if product_quantity == '0':
             orderitems.delete()
             return HttpResponseRedirect(reverse('check_cart'))
@@ -514,4 +512,50 @@ def update_cart (request, name):
     })
 
 def checkout (request):
-    return render(request, 'order/checkout.html')
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+    except:
+        return redirect('user_login') 
+    
+    orders = Order.objects.filter(customer=customer, complete=False)
+    orderitems = OrderItem.objects.filter(order__customer=customer, order__complete=False)
+    total_cart_value = sum(order.get_cart_total for order in orders)
+
+    shipping_fee = total_cart_value * .05
+    overall_total = total_cart_value + shipping_fee
+    print(shipping_fee)
+
+    context={
+        'orderitems':orderitems,
+        'total_cart_value':total_cart_value,
+        'shipping_fee':shipping_fee,
+        'overall_total':overall_total,
+    }
+    
+    if request.method == "POST":
+        delivery_first_name = request.POST['delivery_first_name']
+        delivery_last_name = request.POST['delivery_last_name']
+        delivery_address = request.POST['delivery_address']
+        delivery_province = request.POST['delivery_province']
+        delivery_city = request.POST['delivery_city']
+        delivery_barangay = request.POST['delivery_barangay']
+        delivery_zip_code = request.POST['delivery_zip_code']
+        contact_email = request.POST['contact_email']
+        contact_number = request.POST['contact_number']
+
+        delivery_info = DeliveryInfo(
+            first_name = delivery_first_name,
+            last_name = delivery_last_name,
+            address = delivery_address,
+            province = delivery_province,
+            city = delivery_city,
+            barangay = delivery_barangay,
+            zip_code = delivery_zip_code,
+            email = contact_email,
+            contact_number = contact_number,
+        )
+        delivery_info.save()
+        return render(request, 'order/checkout.html', context)
+        
+    return render(request, 'order/checkout.html', context)
