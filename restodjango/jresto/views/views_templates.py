@@ -12,7 +12,7 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
-from jresto.models import CustomUser, CustomerFeedback, Product, OrderItem, Order, DeliveryInfo
+from jresto.models import CustomUser, CustomerFeedback, Product, OrderItem, Order, DeliveryInfo, Customer
 from jresto.utils import *
 
 from constants.status_code import *
@@ -511,6 +511,19 @@ def update_cart (request, name):
         'orderitems':orderitems,
     })
 
+def remove_cart (request, name):
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+    except:
+        return redirect('user_login') 
+    try:
+        orderitems = OrderItem.objects.get(order__customer=customer, order__complete=False, product__name=name)
+    except:
+        return redirect('check_cart')
+    orderitems.delete()
+    return HttpResponseRedirect(reverse('checkout'))
+
 def checkout (request):
     try:
         customer_id = request.user.id
@@ -519,20 +532,22 @@ def checkout (request):
         return redirect('user_login') 
     
     orders = Order.objects.filter(customer=customer, complete=False)
+    wallet = Customer.objects.get(customer_id=customer_id)
     orderitems = OrderItem.objects.filter(order__customer=customer, order__complete=False)
     total_cart_value = sum(order.get_cart_total for order in orders)
 
     shipping_fee = total_cart_value * .05
     overall_total = total_cart_value + shipping_fee
-    print(shipping_fee)
-
+    remaining_balance = wallet.cash - overall_total
     context={
         'orderitems':orderitems,
         'total_cart_value':total_cart_value,
         'shipping_fee':shipping_fee,
         'overall_total':overall_total,
+        'wallet':wallet,
+        'remaining_balance':remaining_balance,
     }
-    
+
     if request.method == "POST":
         delivery_first_name = request.POST['delivery_first_name']
         delivery_last_name = request.POST['delivery_last_name']
