@@ -30,3 +30,4 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem, DateCompleted)
 
 admin.site.register(CustomerFeedback)
+admin.site.register(DeliveryInfo)
