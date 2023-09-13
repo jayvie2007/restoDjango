@@ -12,6 +12,8 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
+from datetime import date
+
 from jresto.models import CustomUser, CustomerFeedback, Product, OrderItem, Order, DeliveryInfo, Customer
 from jresto.utils import *
 
@@ -574,14 +576,21 @@ def checkout (request):
                 email = contact_email,
                 contact_number = contact_number,
             )
-            
+            wallet.cash = remaining_balance
+            wallet.save()
             delivery_info.save()
+
+            for order in orders:
+                order.complete = True
+                order.total_bill = overall_total
+                order.transaction_id = f"{generate_uid()}__" + str(date.today())
+                order.save()
 
             return render(request, 'order/checkout.html', {
                 'orderitems':orderitems,
-                'total_cart_value':total_cart_value,
-                'shipping_fee':shipping_fee,
-                'overall_total':overall_total,
+                'total_cart_value':0,
+                'shipping_fee':0,
+                'overall_total':0,
                 'wallet':wallet,
                 'remaining_balance':remaining_balance,
                 'success':True,
