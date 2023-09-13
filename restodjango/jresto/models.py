@@ -149,4 +149,4 @@ class DeliveryInfo(models.Model):
     contact_number = models.IntegerField()
 
     def __str__(self):
-        return f"Delivery: {self.id}. {self.customer.first_name} {self.customer.first_name}"
+        return f"Delivery: {self.id}. {self.first_name} {self.last_name}"
