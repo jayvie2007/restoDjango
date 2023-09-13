@@ -530,23 +530,16 @@ def checkout (request):
         customer = CustomUser.objects.get(id=customer_id)
     except:
         return redirect('user_login') 
-    
+
     orders = Order.objects.filter(customer=customer, complete=False)
     wallet = Customer.objects.get(customer_id=customer_id)
     orderitems = OrderItem.objects.filter(order__customer=customer, order__complete=False)
     total_cart_value = sum(order.get_cart_total for order in orders)
-
     shipping_fee = total_cart_value * .05
     overall_total = total_cart_value + shipping_fee
     remaining_balance = wallet.cash - overall_total
-    context={
-        'orderitems':orderitems,
-        'total_cart_value':total_cart_value,
-        'shipping_fee':shipping_fee,
-        'overall_total':overall_total,
-        'wallet':wallet,
-        'remaining_balance':remaining_balance,
-    }
+    
+  
 
     if request.method == "POST":
         delivery_first_name = request.POST['delivery_first_name']
@@ -559,18 +552,46 @@ def checkout (request):
         contact_email = request.POST['contact_email']
         contact_number = request.POST['contact_number']
 
-        delivery_info = DeliveryInfo(
-            first_name = delivery_first_name,
-            last_name = delivery_last_name,
-            address = delivery_address,
-            province = delivery_province,
-            city = delivery_city,
-            barangay = delivery_barangay,
-            zip_code = delivery_zip_code,
-            email = contact_email,
-            contact_number = contact_number,
-        )
-        delivery_info.save()
-        return render(request, 'order/checkout.html', context)
-        
-    return render(request, 'order/checkout.html', context)
+        if remaining_balance < 0:
+            return render(request, 'order/checkout.html', {
+                'orderitems':orderitems,
+                'total_cart_value':total_cart_value,
+                'shipping_fee':shipping_fee,
+                'overall_total':overall_total,
+                'wallet':wallet,
+                'remaining_balance':remaining_balance,
+                'success':False,
+            })
+        else:
+            delivery_info = DeliveryInfo(
+                first_name = delivery_first_name,
+                last_name = delivery_last_name,
+                address = delivery_address,
+                province = delivery_province,
+                city = delivery_city,
+                barangay = delivery_barangay,
+                zip_code = delivery_zip_code,
+                email = contact_email,
+                contact_number = contact_number,
+            )
+            
+            delivery_info.save()
+
+            return render(request, 'order/checkout.html', {
+                'orderitems':orderitems,
+                'total_cart_value':total_cart_value,
+                'shipping_fee':shipping_fee,
+                'overall_total':overall_total,
+                'wallet':wallet,
+                'remaining_balance':remaining_balance,
+                'success':True,
+            })
+    return render(request, 'order/checkout.html', {
+        'orderitems':orderitems,
+        'total_cart_value':total_cart_value,
+        'shipping_fee':shipping_fee,
+        'overall_total':overall_total,
+        'wallet':wallet,
+        'remaining_balance':remaining_balance,
+        'success':"",
+    })
