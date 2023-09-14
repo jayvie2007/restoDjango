@@ -540,8 +540,6 @@ def checkout (request):
     shipping_fee = total_cart_value * .05
     overall_total = total_cart_value + shipping_fee
     remaining_balance = wallet.cash - overall_total
-    
-  
 
     if request.method == "POST":
         delivery_first_name = request.POST['delivery_first_name']
@@ -595,6 +593,7 @@ def checkout (request):
                 'remaining_balance':remaining_balance,
                 'success':True,
             })
+        
     return render(request, 'order/checkout.html', {
         'orderitems':orderitems,
         'total_cart_value':total_cart_value,
