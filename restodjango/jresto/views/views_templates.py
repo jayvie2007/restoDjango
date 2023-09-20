@@ -22,32 +22,41 @@ from constants.status_code import *
 import os
 
 def index(request):
-    customer_id = request.user.id
-    customer = CustomUser.objects.get(id=customer_id)
-    orders = Order.objects.filter(customer=customer, complete=False)
-    
-    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+
     return render(request, 'customer/index.html',{
         'cart_quantity':total_cart_items,
     })
 
 def menu(request):
-    customer_id = request.user.id
-    customer = CustomUser.objects.get(id=customer_id)
-    orders = Order.objects.filter(customer=customer, complete=False)
-
-    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:    
+        total_cart_items = {}
+    
     return render(request, 'customer/menu.html',{
         'cart_quantity':total_cart_items,
     })
 
 def food(request):
-    customer_id = request.user.id
-    customer = CustomUser.objects.get(id=customer_id)
-    orders = Order.objects.filter(customer=customer, complete=False)
     products = Product.objects.filter(product_type="Meal")
 
-    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
 
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
@@ -62,13 +71,15 @@ def food(request):
         })
 
 def drink(request):
-    customer_id = request.user.id
-    customer = CustomUser.objects.get(id=customer_id)
-    orders = Order.objects.filter(customer=customer, complete=False)
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+
     products = Product.objects.filter(product_type="Drink")
-
-    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
         return render(request, 'customer/menu/drink.html', {
@@ -82,13 +93,15 @@ def drink(request):
     })
 
 def side(request):
-    customer_id = request.user.id
-    customer = CustomUser.objects.get(id=customer_id)
-    orders = Order.objects.filter(customer=customer, complete=False)
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+
     products = Product.objects.filter(product_type="Side")
-
-    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
         return render(request, 'customer/menu/side.html', {
@@ -102,12 +115,14 @@ def side(request):
     })
 
 def contact(request):
-    customer_id = request.user.id
-    customer = CustomUser.objects.get(id=customer_id)
-    orders = Order.objects.filter(customer=customer, complete=False)
-
-    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+    
     if request.method == 'POST':
         name = request.POST['feedback_name']
         email = request.POST['feedback_email']
@@ -120,12 +135,13 @@ def contact(request):
             contact_number = contact_number,
             message = message,
         )
-
+        
         return render(request, 'customer/contact.html', {
             'message':message_success,
             'cart_quantity':total_cart_items,
             'submit':True,
         })
+        
     return render(request, 'customer/contact.html',{
         'cart_quantity':total_cart_items,
     })
