@@ -22,48 +22,107 @@ from constants.status_code import *
 import os
 
 def index(request):
-    return render(request, 'customer/index.html')
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+
+    return render(request, 'customer/index.html',{
+        'cart_quantity':total_cart_items,
+    })
 
 def menu(request):
-    return render(request, 'customer/menu.html')
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:    
+        total_cart_items = {}
+    
+    return render(request, 'customer/menu.html',{
+        'cart_quantity':total_cart_items,
+    })
 
 def food(request):
     products = Product.objects.filter(product_type="Meal")
+
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
         return render(request, 'customer/menu/food.html', {
                 'products':products,
+                'cart_quantity':total_cart_items,
             })
     
     return render(request, 'customer/menu/food.html', {
             'products':products,
+            'cart_quantity':total_cart_items,
         })
 
 def drink(request):
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+
     products = Product.objects.filter(product_type="Drink")
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
         return render(request, 'customer/menu/drink.html', {
             'products':products,
+            'cart_quantity':total_cart_items,
         })
     
-    return render(request, 'customer/menu/side.html', {
+    return render(request, 'customer/menu/drink.html', {
         'products':products,
+        'cart_quantity':total_cart_items,
     })
 
 def side(request):
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+
     products = Product.objects.filter(product_type="Side")
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
-        return render(request, 'customer/menu/food.html', {
+        return render(request, 'customer/menu/side.html', {
             'products':products,
+            'cart_quantity':total_cart_items,
         })
     
     return render(request, 'customer/menu/side.html', {
         'products':products,
+        'cart_quantity':total_cart_items,
     })
 
 def contact(request):
+    try:
+        customer_id = request.user.id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except:
+        total_cart_items = {}
+    
     if request.method == 'POST':
         name = request.POST['feedback_name']
         email = request.POST['feedback_email']
@@ -76,12 +135,16 @@ def contact(request):
             contact_number = contact_number,
             message = message,
         )
-
+        
         return render(request, 'customer/contact.html', {
             'message':message_success,
+            'cart_quantity':total_cart_items,
             'submit':True,
         })
-    return render(request, 'customer/contact.html')
+        
+    return render(request, 'customer/contact.html',{
+        'cart_quantity':total_cart_items,
+    })
 
 def register_customer(request):
     if request.method == 'POST':
@@ -138,6 +201,12 @@ def register_customer(request):
 
 @login_required
 def edit_customer(request, uid):
+    customer_id = request.user.id
+    customer = CustomUser.objects.get(id=customer_id)
+    orders = Order.objects.filter(customer=customer, complete=False)
+
+    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    
     if request.method == 'POST':
         users = CustomUser.objects.get(uid=uid)
         user_first_name = request.POST['user_first_name']
@@ -151,6 +220,7 @@ def edit_customer(request, uid):
             'users': users,
             'success': False,
             'message':"Please enter a password!",
+            'cart_quantity':total_cart_items,
         })
 
         elif user_pass == user_confirm_pass:
@@ -166,17 +236,20 @@ def edit_customer(request, uid):
             'users': users,
             'success': True,
             'message':"Success Updating",
+            'cart_quantity':total_cart_items,
             })
         else:
             return render(request, 'customer/authentication/edit.html', {
             'users': users,
             'success': False,
             'message':password_not_match,
+            'cart_quantity':total_cart_items,
             })
     else:
         users = CustomUser.objects.get(uid=uid)
         return render(request, 'customer/authentication/edit.html', {
             'users': users,
+            'cart_quantity':total_cart_items,
         })
 
 def login_customer(request):
@@ -482,7 +555,8 @@ def check_cart (request):
     return render(request, 'order/cart.html',{
         'orderitems':orderitems,
         'total_cart_value':total_cart_value,
-        'total_cart_items':total_cart_items,
+        'cart_quantity':total_cart_items,
+
     })
 
 def update_cart (request, name):
@@ -496,6 +570,9 @@ def update_cart (request, name):
     except:
         return redirect('check_cart')
 
+    orders = Order.objects.filter(customer=customer, complete=False)
+    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'] 
+
     if request.method == 'POST':
         product_quantity = request.POST['product_quantity']
         if product_quantity == '0':
@@ -508,9 +585,12 @@ def update_cart (request, name):
                 'orderitems':orderitems,
                 'success':True,
                 'message':"Changes has been saved",
+                'cart_quantity':total_cart_items,
             })
     return render(request, 'order/update_cart.html', {
         'orderitems':orderitems,
+        'cart_quantity':total_cart_items,
+
     })
 
 def remove_cart (request, name):
@@ -534,6 +614,8 @@ def checkout (request):
         return redirect('user_login') 
 
     orders = Order.objects.filter(customer=customer, complete=False)
+    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'] 
+
     wallet = Customer.objects.get(customer_id=customer_id)
     orderitems = OrderItem.objects.filter(order__customer=customer, order__complete=False)
     total_cart_value = sum(order.get_cart_total for order in orders)
@@ -561,6 +643,7 @@ def checkout (request):
                 'wallet':wallet,
                 'remaining_balance':remaining_balance,
                 'success':False,
+                'cart_quantity':total_cart_items,
             })
         else:
             delivery_info = DeliveryInfo(
@@ -582,7 +665,12 @@ def checkout (request):
                 order.complete = True
                 order.total_bill = overall_total
                 order.transaction_id = f"{generate_uid()}__" + str(date.today())
+                order.date_completed = date.today()
                 order.save()
+
+            for orderitem  in orderitems:
+                orderitem.date_complete = date.today()
+                orderitem.save()
 
             return render(request, 'order/checkout.html', {
                 'orderitems':orderitems,
@@ -591,6 +679,7 @@ def checkout (request):
                 'overall_total':0,
                 'wallet':wallet,
                 'remaining_balance':remaining_balance,
+                'cart_quantity':total_cart_items,
                 'success':True,
             })
         
@@ -601,5 +690,6 @@ def checkout (request):
         'overall_total':overall_total,
         'wallet':wallet,
         'remaining_balance':remaining_balance,
+        'cart_quantity':total_cart_items,
         'success':"",
     })
