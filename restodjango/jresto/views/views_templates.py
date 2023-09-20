@@ -539,7 +539,8 @@ def check_cart (request):
     return render(request, 'order/cart.html',{
         'orderitems':orderitems,
         'total_cart_value':total_cart_value,
-        'total_cart_items':total_cart_items,
+        'cart_quantity':total_cart_items,
+
     })
 
 def update_cart (request, name):
@@ -553,6 +554,9 @@ def update_cart (request, name):
     except:
         return redirect('check_cart')
 
+    orders = Order.objects.filter(customer=customer, complete=False)
+    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'] 
+
     if request.method == 'POST':
         product_quantity = request.POST['product_quantity']
         if product_quantity == '0':
@@ -565,9 +569,12 @@ def update_cart (request, name):
                 'orderitems':orderitems,
                 'success':True,
                 'message':"Changes has been saved",
+                'cart_quantity':total_cart_items,
             })
     return render(request, 'order/update_cart.html', {
         'orderitems':orderitems,
+        'cart_quantity':total_cart_items,
+
     })
 
 def remove_cart (request, name):
@@ -591,6 +598,8 @@ def checkout (request):
         return redirect('user_login') 
 
     orders = Order.objects.filter(customer=customer, complete=False)
+    total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'] 
+
     wallet = Customer.objects.get(customer_id=customer_id)
     orderitems = OrderItem.objects.filter(order__customer=customer, order__complete=False)
     total_cart_value = sum(order.get_cart_total for order in orders)
@@ -618,6 +627,7 @@ def checkout (request):
                 'wallet':wallet,
                 'remaining_balance':remaining_balance,
                 'success':False,
+                'cart_quantity':total_cart_items,
             })
         else:
             delivery_info = DeliveryInfo(
@@ -653,6 +663,7 @@ def checkout (request):
                 'overall_total':0,
                 'wallet':wallet,
                 'remaining_balance':remaining_balance,
+                'cart_quantity':total_cart_items,
                 'success':True,
             })
         
@@ -663,5 +674,6 @@ def checkout (request):
         'overall_total':overall_total,
         'wallet':wallet,
         'remaining_balance':remaining_balance,
+        'cart_quantity':total_cart_items,
         'success':"",
     })
