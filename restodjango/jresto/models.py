@@ -111,7 +111,7 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=100, null=True)
     total_bill = models.IntegerField(null=True, default=0)
     date_created = models.DateField(auto_now_add=True)
-    date_completed = models.DateField(auto_now=True)
+    date_completed = models.DateField(null=True, blank=True)
 
     @property
     def get_cart_total(self):
@@ -127,7 +127,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField(default=0,null=True,blank=True)
     date_created = models.DateField(auto_now_add=True)
-    date_completed = models.DateField(auto_now=True)
+    date_completed = models.DateField(null=True, blank=True)
 
     @property
     def get_total(self):
@@ -147,6 +147,7 @@ class DeliveryInfo(models.Model):
     zip_code = models.IntegerField()
     email = models.EmailField()
     contact_number = models.IntegerField()
-
+    date_created = models.DateField(auto_now_add=True)
+    
     def __str__(self):
         return f"Delivery: {self.id}. {self.first_name} {self.last_name}"
