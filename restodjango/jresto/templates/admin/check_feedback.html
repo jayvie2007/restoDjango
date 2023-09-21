@@ -3,7 +3,7 @@
 {% block title %} Admin Feedback {% endblock %}
 {% block body %}
 
-<div class="flex flex-col justify-center items-center h-screen gap-5">
+<div class="flex flex-col justify-center items-center mx-64 my-80 gap-5">
     {% if success == True %}
     <div class="w-1/2 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert" id="dismissableAlert">
         <span class="block sm:inline">{{sample}}</span>
@@ -13,7 +13,39 @@
       </div>
       <script type="text/javascript" src="{% static 'js/alertmessage.js' %}"></script>
       {% endif %}
-    <div class="flex justify-center w-1/2 ">
+      
+      <div class="flex flex-col w-full">
+        <form method="POST" action="{% url 'admin_feedback' %}">
+            {% csrf_token %}
+            <div class="flex flex-row justify-between">
+                <div class=""> 
+                    <label for="no_of_display" class="block test-base mb-2">No. of display:</label>
+                    <select id="no_of_display" name="no_of_display" class="border w-[150%] text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                        <option selected>5</option>
+                        <option>10</option>
+                        <option>15</option>
+                    </select>
+                </div>
+                <div class="">
+                    <label for="product_filter" class="block test-base mb-2">Sort by:</label>
+                    <select id="product_filter" name="product_filter" class="border w-[150%] text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                        <option selected>All</option>
+                        <option>Name</option>
+                        <option>Email</option>
+                    </select>
+                </div>
+                <div class="">
+                    <label for="product_sort" class="block test-base mb-2">Search:</label>
+                    <input id="product_sort" name="product_sort" class="border w-[150%] text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                </div>
+                <div class="mt-[30px] text-left">
+                    <button type="submit" class="border-2 bg-indigo-700 border-indigo-700 text-white px-10 py-1 w-[100%] hover:bg-red-700 hover:border-red-700 rounded-md"><i class="fa-solid fa-magnifying-glass"></i> Set</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="flex justify-center w-full">
         <table class="table w-full">
             <thead class="text-left">
             <tr>
@@ -24,6 +56,7 @@
                 <th>Message</th>
                 <th>Date Created</th>
                 <th class="text-center">Action</th>
+                <th class="text-center"></th>
             </tr>
             </thead>
             <tbody>
