@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -407,7 +407,6 @@ def admin_display_menu(request):
         no_of_display = request.POST['no_of_display']
         product_filter = request.POST['product_filter']
         product_sort = request.POST['product_sort']
-        products = Product.objects.all()
 
         #Check no of display for pagination
         if int(no_of_display) == 10:
@@ -517,10 +516,51 @@ def admin_delete_menu(request, product_id):
     return HttpResponseRedirect(reverse('menu_product'))
 
 def admin_feedback(request):
-    page_row = 1
-    pagination = Paginator(CustomerFeedback.objects.all().order_by('id'),page_row)
-    page = request.GET.get('page')
+    if not request.user.user_level == "Admin":
+        return redirect('index')
+    
 
+    if request.method == 'POST':
+        no_of_display = request.POST['no_of_display']
+        sort_by = request.POST['feedback_sort']
+        search_word = request.POST['feedback_search']
+        category = request.POST['feedback_category']
+        print(search_word)
+
+        if int(no_of_display) == 10:
+            page_row = 10
+        elif int(no_of_display) == 15:
+            page_row = 15
+        else: page_row = 5
+
+        if sort_by == "Name":
+            sort = "name"
+        elif sort_by == "Email":
+            sort = "email"
+        elif sort_by == "Date Created":
+            sort = "-date_created"
+        else: sort = "-id"
+        
+        if len(search_word):
+            if category == "Name":
+                feedbacks = CustomerFeedback.objects.filter(name__icontains=search_word)
+                print(feedbacks)
+            elif category == "Email":
+                feedbacks = CustomerFeedback.objects.filter(email__icontains=search_word)
+                print(feedbacks)
+            else: 
+                print("check")
+                feedbacks = CustomerFeedback.objects.filter(Q(name__icontains=search_word) | Q(email__icontains=search_word))
+                print(feedbacks)
+        else:
+            feedbacks = CustomerFeedback.objects.all()
+    else:   
+        page_row = 5
+        feedbacks = CustomerFeedback.objects.all()
+        sort = "-id"
+
+    pagination = Paginator(feedbacks.order_by(sort),page_row)
+    page = request.GET.get('page')
     if page == None:
         feedback_list = pagination.get_page(page)
         page = 1
