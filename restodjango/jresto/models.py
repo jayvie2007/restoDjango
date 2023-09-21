@@ -111,7 +111,7 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=100, null=True)
     total_bill = models.IntegerField(null=True, default=0)
     date_created = models.DateField(auto_now_add=True)
-    date_completed = models.DateField(null=True, blank=True)
+    date_completed = models.DateField(null=True)
 
     @property
     def get_cart_total(self):
@@ -127,7 +127,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField(default=0,null=True,blank=True)
     date_created = models.DateField(auto_now_add=True)
-    date_completed = models.DateField(null=True, blank=True)
+    date_completed = models.DateField(null=True)
 
     @property
     def get_total(self):
