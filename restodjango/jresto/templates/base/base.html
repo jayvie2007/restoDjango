@@ -22,7 +22,12 @@
   <div class="mt-1 flex justify-between gap-10">
     {% if request.user.is_authenticated and request.user.user_level == "Customer" %}
     <div class="">
-      <a href="{% url 'check_cart' %}">{{cart_quantity}} <i class="fa-solid fa-cart-shopping"></i></a>
+      <a href="{% url 'check_cart' %}">
+        {% if cart_quantity == None %}
+        {% else %}
+        {{cart_quantity}}
+        {% endif %}
+         <i class="fa-solid fa-cart-shopping"></i></a>
     </div>
       <a href="{% url 'user_edit' request.user.uid %}">{{request.user.username}}</a>
     <a href="{% url 'user_logout' %}">Logout</a>
