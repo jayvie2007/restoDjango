@@ -54,7 +54,6 @@
                 <th>Message</th>
                 <th>Date Created</th>
                 <th class="text-center">Action</th>
-                <th class="text-center"></th>
             </tr>
             </thead>
             <tbody>
@@ -66,7 +65,6 @@
                     <td>{{feedback.contact_number}}</td>
                     <td>{{feedback.message}}</td>
                     <td>{{feedback.date_created}}</td>
-                    <td><a href="{% url 'menu_product_edit' feedback.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td><a href="{% url 'admin_feedback_delete' feedback.id %}"><i class="fa-solid fa-trash"></i></a></td>
                 </tr>
             {% endfor %}
