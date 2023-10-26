@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %} Transaction List {% endblock %}
+{% block body %}
+
+<div class="flex flex-col justify-center items-center mx-64 my-80 gap-5">
+    <div class="flex flex-col w-full">
+      <form method="POST" action="{% url 'admin_feedback' %}">
+          {% csrf_token %}
+          <div class="flex flex-row justify-between">
+              <div class=""> 
+                  <label for="no_of_display" class="block test-base mb-2">No. of display:</label>
+                  <select id="no_of_display" name="no_of_display" class="border w-[150%] text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                      <option selected>5</option>
+                      <option>10</option>
+                      <option>15</option>
+                  </select>
+              </div>
+              <div class="">
+                  <label for="transaction_sort" class="block test-base mb-2">Sort by:</label>
+                  <select id="transaction_sort" name="transaction_sort" class="border w-[150%] text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                      <option selected>Date Created</option>
+                      <option>Name</option>
+                      <option>Email</option>
+                  </select>
+              </div>
+              <div class="">
+                  <label for="transaction_category" class="block test-base mb-2">Category:</label>
+                  <select id="transaction_category" name="transaction_category" class="border w-[150%] text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+                      <option selected>All</option>
+                      <option>Name</option>
+                      <option>Email</option>
+                  </select>
+              </div>
+              <div class="">
+                  <label for="transaction_search" class="block test-base mb-2">Search:</label>
+                  <input id="transaction_search" name="transaction_search" class="border w-[150%] text-base px-2 py-1 focus:outline-none focus:border-gray-600 rounded-md">
+              </div>
+              <div class="mt-[30px] text-left">
+                  <button type="submit" class="border-2 bg-indigo-700 border-indigo-700 text-white px-10 py-1 w-[100%] hover:bg-red-700 hover:border-red-700 rounded-md"><i class="fa-solid fa-magnifying-glass"></i> Set</button>
+              </div>
+          </div>
+      </form>
+  </div>
+
+  <div class="flex justify-center w-full border-t-2 border-l-2 border-r-2 border-black">
+      <table class="table w-full">
+          <thead class="text-left border-b-2 border-black bg-slate-500">
+          <tr>
+              <th>Id</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Date Created</th>
+              <th>Date Completed</th>
+              <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for order in orders %}
+              <tr class="border-b-2 even:bg-slate-300 border-black">
+                  <td>{{order.id}}.</td>
+                  <td>{{order.customer.first_name}} {{order.customer.last_name}}</td>
+                  <td>{{order.status}}</td>
+                  <td>{{order.date_created}}</td>
+                  {% if order.date_completed == None %}
+                  <td></td>
+                  {% else %}
+                  <td>{{order.date_completed}}</td>
+                  {% endif %}
+                  <td><a href="{% url 'admin_transaction_list' order.id %}" class="text-violet-400 hover:text-red-600">See Details</a></td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+               
+  </div>
+
+{% endblock %}
