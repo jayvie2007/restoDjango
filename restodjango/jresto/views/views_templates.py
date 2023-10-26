@@ -575,6 +575,25 @@ def admin_feedback_delete(request, id):
     feedbacks.delete()
     return HttpResponseRedirect(reverse('admin_feedback'))
 
+def admin_transaction(request):
+    print(request.user.is_authenticated, request.user.user_level)
+    # try:
+    if request.user.is_authenticated == True and request.user.user_level == "Admin":
+        # customers = CustomUser.objects.filter(user_level="Customer")
+        orders = Order.objects.all()
+        # orderitems = OrderItem.objects.filter(order=orders)
+    # except:
+    #     return redirect('index')
+    # print(customers, orders, orderitems)
+    print(orders)
+    
+    return render(request, 'admin/check_transactions.html', {
+        'orders':orders,
+    })
+
+def admin_transaction_list(request, id):
+    return render(request, 'admin/check_transactions_list.html')
+
 def check_cart (request):
     try:
         customer_id = request.user.id

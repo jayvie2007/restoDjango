@@ -47,6 +47,8 @@ urlpatterns += [
     path('jresto/admin/delete/product/<str:product_id>', views_templates.admin_delete_menu, name="menu_product_delete"),
     path('jresto/admin/delete/feedback/<str:id>', views_templates.admin_feedback_delete, name="admin_feedback_delete"),
     path('jresto/admin/feedback', views_templates.admin_feedback, name="admin_feedback"),
+    path('jresto/admin/transaction', views_templates.admin_transaction, name="admin_transaction"),
+    path('jresto/admin/transaction-list/<str:id>', views_templates.admin_transaction_list, name="admin_transaction_list"),
 ]
 
 ###### ORDER TRANSANCTION ######
