@@ -15,7 +15,6 @@ gender_choices = (
     ('Female', 'Female'),
     ('Other', 'Other'),
 )
-
 permission_choices = (
     ('Admin', 'Admin'),
     ('Customer', 'Customer'),
@@ -24,6 +23,11 @@ product_choices = (
     ('Meal', 'Meal'),
     ('Drink', 'Drink'),
     ('Side', 'Side'),
+)
+product_choices = (
+    ('Cancelled', 'Cancelled'),
+    ('Pending', 'Pending'),
+    ('Completed', 'Completed'),
 )
 
 contact_number_regex = r'^(\+[0-9]{1,12})|[0-9]{1,11}$'
@@ -110,8 +114,10 @@ class Order(models.Model):
     customer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     transaction_id = models.CharField(max_length=100, null=True)
     total_bill = models.IntegerField(null=True, default=0)
+    status = models.CharField(choices=product_choices, max_length=20, default="Pending")
     date_created = models.DateField(auto_now_add=True)
     date_completed = models.DateField(null=True)
+    
 
     @property
     def get_cart_total(self):
@@ -120,7 +126,7 @@ class Order(models.Model):
         return total
 
     def __str__(self):
-        return f"{self.id}. {self.customer.first_name}"
+        return f"{self.id}. {self.customer.first_name} {self.complete}"
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
@@ -128,7 +134,7 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=0,null=True,blank=True)
     date_created = models.DateField(auto_now_add=True)
     date_completed = models.DateField(null=True)
-
+    
     @property
     def get_total(self):
         total = self.product.price * self.quantity
