@@ -24,7 +24,7 @@ product_choices = (
     ('Drink', 'Drink'),
     ('Side', 'Side'),
 )
-product_choices = (
+process_type = (
     ('Cancelled', 'Cancelled'),
     ('Pending', 'Pending'),
     ('Completed', 'Completed'),
@@ -114,7 +114,7 @@ class Order(models.Model):
     customer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     transaction_id = models.CharField(max_length=100, null=True)
     total_bill = models.IntegerField(null=True, default=0)
-    status = models.CharField(choices=product_choices, max_length=20, default="Pending")
+    status = models.CharField(choices=process_type, max_length=20, default="Pending")
     date_created = models.DateField(auto_now_add=True)
     date_completed = models.DateField(null=True)
     
