@@ -1,10 +1,12 @@
+from django.db.models import Sum
+
 def generate_uid():
     import uuid
     uid = uuid.uuid4().hex[-8:]
     return uid
 
 def add_order_item(request):
-    from .models import CustomUser, Product, Order, OrderItem
+    from jresto.models import CustomUser, Product, Order, OrderItem
     customer_id = request.user.id
     customer = CustomUser.objects.get(id=customer_id)
     
@@ -19,3 +21,15 @@ def add_order_item(request):
         if orderitems:
             orderitems.quantity = (orderitems.quantity + 1)
         orderitems.save()
+
+def check_cart_function(id):
+    from jresto.models import CustomUser, Order
+    try:
+        customer_id = id
+        customer = CustomUser.objects.get(id=customer_id)
+        orders = Order.objects.filter(customer=customer, complete=False)
+        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
+    except Exception as e:
+        print(e)
+        total_cart_items = {}
+    return total_cart_items

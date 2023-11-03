@@ -22,41 +22,20 @@ from constants.status_code import *
 import os
 
 def index(request):
-    try:
-        customer_id = request.user.id
-        customer = CustomUser.objects.get(id=customer_id)
-        orders = Order.objects.filter(customer=customer, complete=False)
-        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-    except:
-        total_cart_items = {}
-
+    total_cart_items = check_cart_function(request.user.id)
     return render(request, 'customer/index.html',{
         'cart_quantity':total_cart_items,
     })
 
 def menu(request):
-    try:
-        customer_id = request.user.id
-        customer = CustomUser.objects.get(id=customer_id)
-        orders = Order.objects.filter(customer=customer, complete=False)
-        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-    except:    
-        total_cart_items = {}
-    
+    total_cart_items = check_cart_function(request.user.id)
     return render(request, 'customer/menu.html',{
         'cart_quantity':total_cart_items,
     })
 
 def food(request):
+    total_cart_items = check_cart_function(request.user.id)
     products = Product.objects.filter(product_type="Meal")
-
-    try:
-        customer_id = request.user.id
-        customer = CustomUser.objects.get(id=customer_id)
-        orders = Order.objects.filter(customer=customer, complete=False)
-        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-    except:
-        total_cart_items = {}
 
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
@@ -71,14 +50,7 @@ def food(request):
         })
 
 def drink(request):
-    try:
-        customer_id = request.user.id
-        customer = CustomUser.objects.get(id=customer_id)
-        orders = Order.objects.filter(customer=customer, complete=False)
-        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-    except:
-        total_cart_items = {}
-
+    total_cart_items = check_cart_function(request.user.id)
     products = Product.objects.filter(product_type="Drink")
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
@@ -93,14 +65,7 @@ def drink(request):
     })
 
 def side(request):
-    try:
-        customer_id = request.user.id
-        customer = CustomUser.objects.get(id=customer_id)
-        orders = Order.objects.filter(customer=customer, complete=False)
-        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-    except:
-        total_cart_items = {}
-
+    total_cart_items = check_cart_function(request.user.id)
     products = Product.objects.filter(product_type="Side")
     if request.user.is_authenticated == True and request.user.user_level == "Customer":
         add_order_item(request)
@@ -115,13 +80,7 @@ def side(request):
     })
 
 def contact(request):
-    try:
-        customer_id = request.user.id
-        customer = CustomUser.objects.get(id=customer_id)
-        orders = Order.objects.filter(customer=customer, complete=False)
-        total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
-    except:
-        total_cart_items = {}
+    total_cart_items = check_cart_function(request.user.id)
     
     if request.method == 'POST':
         name = request.POST['feedback_name']
