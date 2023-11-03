@@ -717,6 +717,7 @@ def checkout (request):
 
             for order in orders:
                 order.complete = True
+                order.status = "Completed"
                 order.total_bill = overall_total
                 order.transaction_id = f"{generate_uid()}__" + str(date.today())
                 order.date_completed = date.today()
