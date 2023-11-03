@@ -33,3 +33,13 @@ def check_cart_function(id):
         print(e)
         total_cart_items = {}
     return total_cart_items
+
+def get_wallet(id):
+    from jresto.models import Customer
+    try:
+        customer_id = Customer.objects.get(customer_id=id)
+    except Exception as e:
+        print(e)
+
+    customer = customer_id
+    return customer.cash 

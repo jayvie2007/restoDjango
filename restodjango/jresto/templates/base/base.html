@@ -21,6 +21,7 @@
   </ul>
   <div class="mt-1 flex justify-between gap-10">
     {% if request.user.is_authenticated and request.user.user_level == "Customer" %}
+    <div class=""><a href="">PHP {{customer_cash}}</a></div>
     <div class="">
       <a href="{% url 'check_cart' %}">
         {% if cart_quantity == None %}
