@@ -88,7 +88,7 @@ def contact(request):
         contact_number = request.POST['feedback_number']
         message = request.POST['feedback_message']
 
-        new_message = CustomerFeedback.objects.create(
+        CustomerFeedback.objects.create(
             name = name,
             email = email,
             contact_number = contact_number,
@@ -137,7 +137,7 @@ def register_customer(request):
                     'message': email_exist,
                 })
             else:
-                new_customer = CustomUser.objects.create(
+                CustomUser.objects.create(
                     uid = f"customer__{uid}",
                     first_name = customer_firstname,
                     middle_name = customer_middlename,
