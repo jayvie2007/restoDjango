@@ -36,6 +36,7 @@ urlpatterns += [
     path('jresto/menu/side', views_templates.side, name="menu_side"),
 
     path('jresto/contact-us', views_templates.contact, name="contact_us"),
+    path('jresto/money/add-money', views_templates.add_money, name="add_money")
 ]
 
 ###### ADMIN ######

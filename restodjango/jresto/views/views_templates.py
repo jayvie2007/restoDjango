@@ -723,3 +723,6 @@ def checkout (request):
         'cart_quantity':total_cart_items,
         'success':"",
     })
+
+def add_money(request):
+    return render(request, 'money/add_money.html')
