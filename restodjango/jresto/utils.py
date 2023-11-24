@@ -30,16 +30,15 @@ def check_cart_function(id):
         orders = Order.objects.filter(customer=customer, complete=False)
         total_cart_items = orders.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum']
     except Exception as e:
-        print(e)
         total_cart_items = {}
     return total_cart_items
 
 def get_wallet(id):
     from jresto.models import Customer
     try:
-        customer_id = Customer.objects.get(customer_id=id)
-    except Exception as e:
-        print(e)
+        customer = Customer.objects.get(customer_id=id)
+        cash = customer.cash
+    except Customer.DoesNotExist:
+        cash = 0
 
-    customer = customer_id
-    return customer.cash 
+    return cash
