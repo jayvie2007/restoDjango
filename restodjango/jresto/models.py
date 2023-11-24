@@ -87,7 +87,7 @@ class CustomUser (AbstractUser):
     date_updated = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user_level}: {self.first_name} {self.last_name}"
+        return f"{self.id} {self.first_name} {self.last_name}"
     
     def save(self, *args, **kwargs):
         created = not self.pk  # Check if the instance is being created for the first time
@@ -126,7 +126,7 @@ class Order(models.Model):
         return total
 
     def __str__(self):
-        return f"{self.id}. {self.customer.first_name} {self.complete}"
+        return f"{self.id}. {self.customer.first_name} {self.customer.last_name}"
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
