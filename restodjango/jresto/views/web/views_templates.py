@@ -109,4 +109,6 @@ def contact(request):
 
     return render(request, 'customer/contact.html', {
         'cart_quantity': total_cart_items,
+        'customer_cash': wallet,
+
     })

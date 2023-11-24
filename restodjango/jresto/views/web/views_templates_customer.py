@@ -17,7 +17,7 @@ def check_cart(request):
         customer = CustomUser.objects.get(id=customer_id)
     except:
         return redirect('user_login')
-
+    wallet = get_wallet(request.user.id)
     orders = Order.objects.filter(customer=customer, complete=False)
     orderitems = OrderItem.objects.filter(
         order__customer=customer, order__complete=False)
@@ -29,6 +29,7 @@ def check_cart(request):
         'orderitems': orderitems,
         'total_cart_value': total_cart_value,
         'cart_quantity': total_cart_items,
+        'customer_cash': wallet,
 
     })
 
@@ -44,7 +45,8 @@ def update_cart(request, name):
             order__customer=customer, order__complete=False, product__name=name)
     except:
         return redirect('check_cart')
-
+    
+    wallet = get_wallet(request.user.id)
     orders = Order.objects.filter(customer=customer, complete=False)
     total_cart_items = orders.aggregate(Sum('orderitem__quantity'))[
         'orderitem__quantity__sum']
@@ -62,10 +64,14 @@ def update_cart(request, name):
                 'success': True,
                 'message': "Changes has been saved",
                 'cart_quantity': total_cart_items,
+                'customer_cash': wallet,
+
             })
     return render(request, 'order/update_cart.html', {
         'orderitems': orderitems,
         'cart_quantity': total_cart_items,
+        'customer_cash': wallet,
+
 
     })
 
@@ -91,7 +97,8 @@ def checkout(request):
         customer = CustomUser.objects.get(id=customer_id)
     except:
         return redirect('user_login')
-
+    
+    wallet_amount = get_wallet(request.user.id)
     orders = Order.objects.filter(customer=customer, complete=False)
     total_cart_items = orders.aggregate(Sum('orderitem__quantity'))[
         'orderitem__quantity__sum']
@@ -125,6 +132,8 @@ def checkout(request):
                 'remaining_balance': remaining_balance,
                 'success': False,
                 'cart_quantity': total_cart_items,
+                'customer_cash': wallet_amount,
+
             })
         else:
             delivery_info = DeliveryInfo(
@@ -164,6 +173,8 @@ def checkout(request):
                 'remaining_balance': remaining_balance,
                 'cart_quantity': total_cart_items,
                 'success': True,
+                'customer_cash': wallet_amount,
+
             })
 
     return render(request, 'order/checkout.html', {
@@ -175,4 +186,6 @@ def checkout(request):
         'remaining_balance': remaining_balance,
         'cart_quantity': total_cart_items,
         'success': "",
+        'customer_cash': wallet_amount,
+
     })

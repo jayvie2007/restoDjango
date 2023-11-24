@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jresto.models import CustomUser, Order
-from jresto.utils import generate_uid
+from jresto.utils import generate_uid, get_wallet
 
 from constants.status_code import *
 
@@ -69,6 +69,7 @@ def edit_customer(request, uid):
     customer_id = request.user.id
     customer = CustomUser.objects.get(id=customer_id)
     orders = Order.objects.filter(customer=customer, complete=False)
+    wallet = get_wallet(request.user.id)
 
     total_cart_items = orders.aggregate(Sum('orderitem__quantity'))[
         'orderitem__quantity__sum']
@@ -87,6 +88,7 @@ def edit_customer(request, uid):
                 'success': False,
                 'message': "Please enter a password!",
                 'cart_quantity': total_cart_items,
+                'customer_cash': wallet,
             })
 
         elif user_pass == user_confirm_pass:
@@ -103,6 +105,8 @@ def edit_customer(request, uid):
                 'success': True,
                 'message': "Success Updating",
                 'cart_quantity': total_cart_items,
+                'customer_cash': wallet,
+
             })
         else:
             return render(request, 'customer/authentication/edit.html', {
@@ -110,12 +114,16 @@ def edit_customer(request, uid):
                 'success': False,
                 'message': password_not_match,
                 'cart_quantity': total_cart_items,
+                'customer_cash': wallet,
+
             })
     else:
         users = CustomUser.objects.get(uid=uid)
         return render(request, 'customer/authentication/edit.html', {
             'users': users,
             'cart_quantity': total_cart_items,
+            'customer_cash': wallet,
+
         })
 
 
