@@ -1,2 +1,4 @@
 .env/Lib
 .env/Scripts
+__pycache__/
+db.sqlite3
