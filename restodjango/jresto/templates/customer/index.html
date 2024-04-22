@@ -1,9 +1,34 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block title %} Jresto {% endblock %}
+
 {% block body %}
 
-<div class="flex justify-center items-center">
-<img class="h" src="{% static 'img/home/headerpicture.jpg' %}">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url('{% static "img/home/headerpicture.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
+    }
+</style>
+
+
+<div class="flex flex-col justify-center items-center h-screen max-md:h-full">
+    <div class="flex flex-col md:flex-row max-w-[900px] gap-5 max-md:mt-20">
+        <div class="w-96 p-6 shadow-lg bg-amber-950 bg-opacity-85 rounded-md min-w-[24rem]">
+            <img class="h" src="{% static 'img/home/header.jpg' %}">
+            <div class="mt-5 ">
+                <button type="submit" class=" inset-x-0 flex justify-center border-2 center bg-indigo-700 border-indigo-700 text-white py-1 w-1/2 hover:bg-red-700 hover:border-red-700 rounded-md">Send Message</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 {% endblock %}

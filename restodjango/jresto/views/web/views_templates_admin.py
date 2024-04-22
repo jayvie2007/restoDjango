@@ -346,7 +346,6 @@ def admin_feedback_delete(request, id):
 
 
 def admin_transaction(request):
-    print(request.user.is_authenticated, request.user.user_level)
     if request.user.is_authenticated == True and request.user.user_level == "Admin":
         orders = Order.objects.all()
 
@@ -356,4 +355,9 @@ def admin_transaction(request):
 
 
 def admin_transaction_list(request, id):
+    if request.user.is_authenticated == True and request.user.user_level == "Admin":
+        try:
+            get_orders = Order.objects.get(id=id)
+        except ObjectDoesNotExist:
+            raise Http404("Product does not exist")    
     return render(request, 'admin/check_transactions_list.html')
