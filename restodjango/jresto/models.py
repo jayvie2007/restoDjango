@@ -158,4 +158,4 @@ class TransactionHistory(models.Model):
     date_updated = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.id} {self.transaction_type} {self.user_id}'
+        return f'{self.id} {self.transaction_type} {self.customer_id}'
