@@ -39,7 +39,6 @@ class ProductAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if form.cleaned_data.get('clear_picture'):
             obj.delete_image()
-
         obj.save()
         
 
@@ -77,7 +76,6 @@ class CustomUserAdmin(admin.ModelAdmin):
         'date_updated',
 
     )
-
 
 
 class OrderItemAdmin(admin.ModelAdmin):

@@ -5,6 +5,7 @@ def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid
 
+
 def add_order_item(request):
     from jresto.models import CustomUser, Product, Order, OrderItem
     customer_id = request.user.id
@@ -15,12 +16,13 @@ def add_order_item(request):
         product_id = request.POST['product_id']
         product_item = Product.objects.get(id=product_id)
 
-        orders, created = Order.objects.get_or_create(customer = customer, complete = False)
-        orderitems, created = OrderItem.objects.get_or_create(order = orders, product = product_item)
+        orders, created = Order.objects.get_or_create(customer=customer, complete=False)
+        orderitems, created = OrderItem.objects.get_or_create(order=orders, product=product_item)
         
         if orderitems:
             orderitems.quantity = (orderitems.quantity + 1)
         orderitems.save()
+
 
 def check_cart_function(id):
     from jresto.models import CustomUser, Order
@@ -32,6 +34,7 @@ def check_cart_function(id):
     except Exception as e:
         total_cart_items = {}
     return total_cart_items
+
 
 def get_wallet(id):
     from jresto.models import Customer

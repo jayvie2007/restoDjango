@@ -24,6 +24,7 @@ PROCESS_TYPE_CHOICES = (
     ('Completed', 'Completed'),
 )
 
+
 ALL_TRANSACTION_TYPE = (
-    ('', '')
+    ('', ''),
 )

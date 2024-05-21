@@ -29,6 +29,7 @@ class CustomerFeedback(models.Model):
     def __str__(self):
         return f"{self.id}. {self.name}"
 
+
 class Product(models.Model):
     product_id = models.CharField(max_length=16, default="")
     product_type = models.CharField(max_length=15, choices=PRODUCT_CHOICES, default="")
@@ -94,6 +95,7 @@ class Customer(models.Model):
     def __str__(self):
         return f"Wallet: {self.customer.first_name} {self.customer.last_name}"
     
+    
 class Order(models.Model):
     complete = models.BooleanField(default=False)
     customer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
@@ -103,7 +105,6 @@ class Order(models.Model):
     date_created = models.DateField(auto_now_add=True)
     date_completed = models.DateField(null=True)
     
-
     @property
     def get_cart_total(self):
         orderitems = self.orderitem_set.all()
@@ -144,7 +145,6 @@ class DeliveryInfo(models.Model):
     
     def __str__(self):
         return f"Delivery: {self.id}. {self.first_name} {self.last_name}"
-
 
 
 class TransactionHistory(models.Model):
